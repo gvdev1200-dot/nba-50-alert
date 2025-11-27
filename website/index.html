@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA 50-Point Alert - Never Miss DoorDash 50% OFF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,132 +15,310 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #e8eaed;
+            background: #0a0e27;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(255, 102, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 102, 0, 0.06) 0%, transparent 50%);
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle basketball texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6600' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero number background */
+        .hero-number {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 280px;
+            font-weight: 900;
+            color: rgba(255, 102, 0, 0.05);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
         }
 
         .header {
-            background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
-            padding: 40px 30px;
             text-align: center;
-            color: white;
+            padding: 80px 20px 60px;
+            position: relative;
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ff6600 0%, #ff9933 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
         }
 
-        .header p {
+        .header .subtitle {
+            font-size: 20px;
+            color: #9aa0a6;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .header .tagline {
             font-size: 18px;
-            opacity: 0.95;
+            color: #5f6368;
+            font-weight: 400;
         }
 
         .content {
-            padding: 40px 30px;
+            position: relative;
         }
 
+        /* Hero text section */
         .hero-text {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 48px;
+            padding: 0 20px;
         }
 
         .hero-text h2 {
-            font-size: 24px;
-            color: #1a1a1a;
-            margin-bottom: 15px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
         }
 
         .hero-text p {
-            font-size: 16px;
-            color: #666;
+            font-size: 18px;
+            color: #9aa0a6;
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.7;
         }
 
+        /* Benefits section - glass morphism cards */
         .benefits {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 48px;
+            padding: 0 20px;
         }
 
         .benefit {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 102, 0, 0.1);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .benefit:last-child {
-            margin-bottom: 0;
+        .benefit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .benefit:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 102, 0, 0.3);
+            box-shadow: 0 8px 24px rgba(255, 102, 0, 0.15);
+        }
+
+        .benefit:hover::before {
+            opacity: 1;
         }
 
         .benefit-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 24px;
-            margin-right: 12px;
+            position: relative;
+            z-index: 1;
         }
 
+        .benefit-text {
+            font-size: 15px;
+            color: #e8eaed;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Promo code box */
+        .promo-code {
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.08) 0%, rgba(255, 136, 0, 0.05) 100%);
+            border: 2px dashed rgba(255, 102, 0, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin: 0 20px 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-code::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 102, 0, 0.05) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .promo-code-label {
+            font-size: 14px;
+            color: #9aa0a6;
+            margin-bottom: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .promo-code code {
+            font-family: 'Inter', monospace;
+            font-size: 48px;
+            font-weight: 900;
+            color: #ff6600;
+            letter-spacing: 0.1em;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Form container */
         .form-container {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 102, 0, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 0 20px 64px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 15px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 16px 20px;
             font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            transition: border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+
+        .form-group input::placeholder {
+            color: #5f6368;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: #ff6600;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.1);
         }
 
         .btn {
             width: 100%;
-            padding: 14px 24px;
+            padding: 18px 32px;
             font-size: 18px;
-            font-weight: 600;
-            color: white;
+            font-weight: 700;
+            color: #ffffff;
             background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(255, 102, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+            box-shadow: 0 8px 24px rgba(255, 102, 0, 0.4), 0 0 40px rgba(255, 102, 0, 0.2);
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:active {
@@ -150,108 +331,163 @@
             transform: none;
         }
 
+        /* Message notifications */
         .message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
             display: none;
+            font-weight: 500;
+            border-left: 4px solid;
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: rgba(52, 211, 153, 0.1);
+            color: #6ee7b7;
+            border-color: #34d399;
         }
 
         .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: rgba(248, 113, 113, 0.1);
+            color: #fca5a5;
+            border-color: #f87171;
         }
 
         .message.show {
             display: block;
+            animation: slideIn 0.3s ease;
         }
 
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #999;
-            font-size: 13px;
-            border-top: 1px solid #eee;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .promo-code {
-            background: #fff3e0;
-            border: 2px dashed #ff6600;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            margin: 20px 0;
+        /* Court line divider */
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.3), transparent);
+            margin: 64px 40px;
         }
 
-        .promo-code code {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff6600;
-            letter-spacing: 2px;
-        }
-
+        /* Backstory section */
         .backstory {
-            background: #f0f4ff;
-            border-left: 4px solid #667eea;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 25px 0;
-            font-size: 14px;
-            line-height: 1.7;
-            color: #555;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid #ff6600;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 0 20px 48px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #9aa0a6;
         }
 
         .backstory strong {
-            color: #333;
-            font-size: 15px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
         }
 
+        /* Promo image */
         .promo-image {
-            margin: 25px 0;
+            margin: 0 20px 64px;
             text-align: center;
         }
 
         .promo-image img {
             max-width: 100%;
             height: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 102, 0, 0.2);
         }
 
         .promo-image p {
-            font-size: 13px;
-            color: #999;
-            margin-top: 10px;
+            font-size: 14px;
+            color: #5f6368;
+            margin-top: 16px;
             font-style: italic;
         }
 
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px 20px;
+            color: #5f6368;
+            font-size: 13px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 40px;
+        }
+
+        /* Floating animation for CTA button */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Responsive design */
         @media (max-width: 640px) {
-            .container {
-                margin: 20px auto;
+            .hero-number {
+                font-size: 180px;
+                top: -40px;
+            }
+
+            .header {
+                padding: 60px 20px 40px;
             }
 
             .header h1 {
-                font-size: 26px;
+                font-size: 40px;
+            }
+
+            .header .subtitle {
+                font-size: 18px;
+            }
+
+            .header .tagline {
+                font-size: 16px;
             }
 
             .hero-text h2 {
-                font-size: 20px;
+                font-size: 26px;
+            }
+
+            .hero-text p {
+                font-size: 16px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .promo-code {
+                padding: 24px;
+            }
+
+            .promo-code code {
+                font-size: 36px;
+            }
+
+            .form-container {
+                padding: 28px 24px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="hero-number">50</div>
+
         <div class="header">
-            <h1>🏀 NBA 50-Point Alert</h1>
-            <p>Never Miss DoorDash 50% OFF</p>
+            <h1>NBA 50-Point Alert</h1>
+            <p class="subtitle">Never Miss DoorDash 50% OFF</p>
+            <p class="tagline">Automatic alerts when the promo activates</p>
         </div>
 
         <div class="content">
@@ -262,25 +498,25 @@
 
             <div class="benefits">
                 <div class="benefit">
-                    <span class="benefit-icon">✉️</span>
-                    <span>Email alerts when promo is active</span>
+                    <div class="benefit-icon">✉</div>
+                    <div class="benefit-text">Email alerts when promo is active</div>
                 </div>
                 <div class="benefit">
-                    <span class="benefit-icon">💰</span>
-                    <span>Save 50% (up to $10) on DoorDash</span>
+                    <div class="benefit-icon">💰</div>
+                    <div class="benefit-text">Save 50% (up to $10) on DoorDash</div>
                 </div>
                 <div class="benefit">
-                    <span class="benefit-icon">🎯</span>
-                    <span>No spam - only when it happens</span>
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-text">No spam - only when it happens</div>
                 </div>
                 <div class="benefit">
-                    <span class="benefit-icon">🆓</span>
-                    <span>100% free service</span>
+                    <div class="benefit-icon">🆓</div>
+                    <div class="benefit-text">100% free service</div>
                 </div>
             </div>
 
             <div class="promo-code">
-                <div style="font-size: 14px; color: #666; margin-bottom: 5px;">The Promo Code:</div>
+                <div class="promo-code-label">The Promo Code</div>
                 <code>NBA50</code>
             </div>
 
@@ -303,6 +539,8 @@
                     </button>
                 </form>
             </div>
+
+            <div class="divider"></div>
 
             <div class="backstory">
                 <strong>The backstory:</strong> I found out about this DoorDash promo a while back but kept missing it because who has time to check NBA scores every single day? So I built this little tool to handle it automatically. Your email stays 100% private - I'll never share it with anyone, and you can unsubscribe with one click anytime.
