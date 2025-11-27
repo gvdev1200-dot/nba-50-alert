@@ -885,81 +885,28 @@
             return date.toLocaleDateString('en-US', options);
         }
 
-        // Fetch 50+ point games from ESPN API
-        async function fetch50PlusScorers() {
+        // Load 50+ Club data from JSON file (FAST!)
+        async function load50ClubData() {
             try {
-                const season = getCurrentSeason();
-                seasonLabelEl.textContent = `${season} Season`;
-
-                // Fetch recent NBA games (we'll check the last 200 days)
-                const today = new Date();
-                const startDate = new Date(today);
-                startDate.setDate(today.getDate() - 200); // Last ~6-7 months
-
-                const scorers = [];
-
-                // Format dates for ESPN API
-                const startDateStr = startDate.toISOString().split('T')[0].replace(/-/g, '');
-                const endDateStr = today.toISOString().split('T')[0].replace(/-/g, '');
-
-                // Fetch games in chunks (ESPN API limits)
-                const response = await fetch(
-                    `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=${startDateStr}-${endDateStr}&limit=300`
-                );
-
-                if (!response.ok) throw new Error('Failed to fetch games');
+                const response = await fetch('data/50_club.json');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
                 const data = await response.json();
 
-                // Process games to find 50+ point performances
-                if (data.events) {
-                    for (const game of data.events) {
-                        const gameDate = game.date;
-                        const competitions = game.competitions?.[0];
-
-                        if (!competitions) continue;
-
-                        // Check box score for 50+ scorers
-                        const gameId = game.id;
-
-                        try {
-                            const boxScoreResponse = await fetch(
-                                `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=${gameId}`
-                            );
-
-                            if (boxScoreResponse.ok) {
-                                const boxScore = await boxScoreResponse.json();
-
-                                // Check both teams
-                                boxScore.boxscore?.players?.forEach(team => {
-                                    team.statistics?.[0]?.athletes?.forEach(player => {
-                                        const points = parseInt(player.stats?.[0] || 0);
-
-                                        if (points >= 50) {
-                                            scorers.push({
-                                                date: gameDate,
-                                                name: player.athlete?.displayName || 'Unknown',
-                                                team: team.team?.abbreviation || 'Unknown',
-                                                points: points
-                                            });
-                                        }
-                                    });
-                                });
-                            }
-                        } catch (err) {
-                            // Skip this game if box score fails
-                            console.error('Box score error:', err);
-                        }
-                    }
+                // Update season label
+                if (data.season) {
+                    seasonLabelEl.textContent = `${data.season} Season`;
                 }
 
-                // Sort by date (most recent first)
-                scorers.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                displayScorers(scorers);
+                // Display scorers (note: JSON uses "player" not "name")
+                if (data.scorers && data.scorers.length > 0) {
+                    displayScorers(data.scorers);
+                } else {
+                    showEmptyState('No 50+ point games yet this season. Check back soon!');
+                }
             } catch (error) {
-                console.error('Error fetching scorers:', error);
-                showEmptyState('Unable to load scorers. Please try again later.');
+                console.error('Error loading 50+ Club data:', error);
+                showEmptyState('Unable to load data. Please refresh the page.');
             }
         }
 
@@ -975,7 +922,7 @@
                     <div class="scorer-date">${formatDate(scorer.date)}</div>
                     <div class="scorer-info">
                         <div class="scorer-player">
-                            <div class="scorer-name">${scorer.name}</div>
+                            <div class="scorer-name">${scorer.player}</div>
                             <div class="scorer-team">${scorer.team}</div>
                         </div>
                         <div class="scorer-points">${scorer.points}</div>
@@ -995,7 +942,7 @@
         }
 
         // Load scorers on page load
-        fetch50PlusScorers();
+        load50ClubData();
     </script>
 </body>
 </html>
