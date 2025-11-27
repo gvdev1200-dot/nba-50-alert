@@ -111,16 +111,24 @@ load50ClubData();
 
 ## Deployment Steps
 
-1. Run script once to generate initial data:
-   ```bash
-   python src/generate_50_club_data.py
-   ```
+### Fully Automated (Zero Manual Work)
 
-2. Update index.html with optimized JavaScript (see above)
+**GitHub Actions handles everything automatically:**
+- Runs daily at 2 AM UTC (after NBA games finish)
+- Executes `src/generate_50_club_data.py`
+- Auto-commits updated JSON to repository
+- GitHub Pages auto-deploys the changes
 
-3. Deploy to GitHub Pages
+**Setup (One-Time):**
+1. Merge PR to main branch
+2. GitHub Actions workflow (`.github/workflows/update-50-club-data.yml`) will run automatically
+3. Initial data generation happens on first workflow run
+4. Data updates daily without any manual intervention
 
-4. Schedule daily script run (cron/GitHub Actions/manual)
+**Manual Trigger (Optional):**
+- Go to Actions tab on GitHub
+- Select "Update 50+ Club Data" workflow
+- Click "Run workflow" to trigger immediately
 
 ## Team Review
 
