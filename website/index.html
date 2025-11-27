@@ -42,22 +42,11 @@
             z-index: 0;
         }
 
-        .page-wrapper {
-            max-width: 1400px;
+        .container {
+            max-width: 680px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 40px;
-            align-items: start;
-        }
-
-        .container {
-            position: relative;
         }
 
         /* Hero number background */
@@ -436,222 +425,13 @@
             margin-top: 40px;
         }
 
-        /* 50+ CLUB SIDEBAR */
-        .sidebar {
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 102, 0, 0.3);
-            border-radius: 3px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 102, 0, 0.5);
-        }
-
-        .club-header {
-            background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 136, 0, 0.08) 100%);
-            border: 2px solid rgba(255, 102, 0, 0.3);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .club-header::before {
-            content: '50';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 120px;
-            font-weight: 900;
-            color: rgba(255, 102, 0, 0.08);
-            z-index: 0;
-        }
-
-        .club-header h3 {
-            font-size: 24px;
-            font-weight: 900;
-            color: #ff6600;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .club-header p {
-            font-size: 13px;
-            color: #9aa0a6;
-            position: relative;
-            z-index: 1;
-        }
-
-        .season-label {
-            display: inline-block;
-            background: rgba(255, 102, 0, 0.2);
-            color: #ff9933;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
-        .scorers-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .scorer-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 102, 0, 0.15);
-            border-radius: 16px;
-            padding: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scorer-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #ff6600, #ff8800);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .scorer-card:hover {
-            transform: translateX(4px);
-            border-color: rgba(255, 102, 0, 0.4);
-            box-shadow: 0 4px 16px rgba(255, 102, 0, 0.2);
-        }
-
-        .scorer-card:hover::before {
-            opacity: 1;
-        }
-
-        .scorer-date {
-            font-size: 11px;
-            color: #5f6368;
-            font-weight: 500;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .scorer-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .scorer-player {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .scorer-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .scorer-team {
-            font-size: 13px;
-            color: #9aa0a6;
-        }
-
-        .scorer-points {
-            background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: 900;
-            padding: 8px 16px;
-            border-radius: 12px;
-            min-width: 60px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
-        }
-
-        .loading-spinner {
-            text-align: center;
-            padding: 40px;
-            color: #5f6368;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 102, 0, 0.1);
-            border-top-color: #ff6600;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #5f6368;
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.3;
-        }
-
-        .empty-state-text {
-            font-size: 14px;
-            line-height: 1.6;
+        /* Floating animation for CTA button */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         /* Responsive design */
-        @media (max-width: 1024px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: relative;
-                top: 0;
-                max-height: none;
-                margin-top: 40px;
-            }
-        }
-
         @media (max-width: 640px) {
             .hero-number {
                 font-size: 180px;
@@ -697,107 +477,83 @@
             .form-container {
                 padding: 28px 24px;
             }
-
-            .club-header h3 {
-                font-size: 20px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="page-wrapper">
-        <div class="main-layout">
-            <!-- Main Content -->
-            <div class="container">
-                <div class="hero-number">50</div>
+    <div class="container">
+        <div class="hero-number">50</div>
 
-                <div class="header">
-                    <h1>NBA 50-Point Alert</h1>
-                    <p class="subtitle">Never Miss DoorDash 50% OFF</p>
-                    <p class="tagline">Automatic alerts when the promo activates</p>
+        <div class="header">
+            <h1>NBA 50-Point Alert</h1>
+            <p class="subtitle">Never Miss DoorDash 50% OFF</p>
+            <p class="tagline">Automatic alerts when the promo activates</p>
+        </div>
+
+        <div class="content">
+            <div class="hero-text">
+                <h2>Get Notified When the Promo is Active</h2>
+                <p>When any NBA player scores 50+ points, DoorDash gives DashPass members 50% off the next day. We'll email you so you never miss it!</p>
+            </div>
+
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon">✉</div>
+                    <div class="benefit-text">Email alerts when promo is active</div>
                 </div>
-
-                <div class="content">
-                    <div class="hero-text">
-                        <h2>Get Notified When the Promo is Active</h2>
-                        <p>When any NBA player scores 50+ points, DoorDash gives DashPass members 50% off the next day. We'll email you so you never miss it!</p>
-                    </div>
-
-                    <div class="benefits">
-                        <div class="benefit">
-                            <div class="benefit-icon">✉</div>
-                            <div class="benefit-text">Email alerts when promo is active</div>
-                        </div>
-                        <div class="benefit">
-                            <div class="benefit-icon">💰</div>
-                            <div class="benefit-text">Save 50% (up to $10) on DoorDash</div>
-                        </div>
-                        <div class="benefit">
-                            <div class="benefit-icon">🎯</div>
-                            <div class="benefit-text">No spam - only when it happens</div>
-                        </div>
-                        <div class="benefit">
-                            <div class="benefit-icon">🆓</div>
-                            <div class="benefit-text">100% free service</div>
-                        </div>
-                    </div>
-
-                    <div class="promo-code">
-                        <div class="promo-code-label">The Promo Code</div>
-                        <code>NBA50</code>
-                    </div>
-
-                    <div id="message" class="message"></div>
-
-                    <div class="form-container">
-                        <form id="signupForm">
-                            <div class="form-group">
-                                <label for="email">Your Email Address</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="you@example.com"
-                                    required
-                                >
-                            </div>
-                            <button type="submit" class="btn" id="submitBtn">
-                                Get Notified
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <div class="backstory">
-                        <strong>The backstory:</strong> I found out about this DoorDash promo a while back but kept missing it because who has time to check NBA scores every single day? So I built this little tool to handle it automatically. Your email stays 100% private - I'll never share it with anyone, and you can unsubscribe with one click anytime.
-                    </div>
-
-                    <div class="promo-image">
-                        <img src="doordash-promo.jpg" alt="DoorDash NBA50 Promotion - 50% off when any player scores 50+ points">
-                        <p>Here's what the actual DoorDash promo looks like</p>
-                    </div>
+                <div class="benefit">
+                    <div class="benefit-icon">💰</div>
+                    <div class="benefit-text">Save 50% (up to $10) on DoorDash</div>
                 </div>
-
-                <div class="footer">
-                    Free service · Unsubscribe anytime via email link · ~15-20 alerts per NBA season
+                <div class="benefit">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-text">No spam - only when it happens</div>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🆓</div>
+                    <div class="benefit-text">100% free service</div>
                 </div>
             </div>
 
-            <!-- 50+ Club Sidebar -->
-            <aside class="sidebar">
-                <div class="club-header">
-                    <h3>50+ Club</h3>
-                    <p>Players who scored 50+ this season</p>
-                    <div class="season-label" id="seasonLabel">2024-25 Season</div>
-                </div>
-                <div id="scorersList" class="scorers-list">
-                    <div class="loading-spinner">
-                        <div class="spinner"></div>
-                        <p style="margin-top: 16px; font-size: 14px;">Loading scorers...</p>
+            <div class="promo-code">
+                <div class="promo-code-label">The Promo Code</div>
+                <code>NBA50</code>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div class="form-container">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="email">Your Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
                     </div>
-                </div>
-            </aside>
+                    <button type="submit" class="btn" id="submitBtn">
+                        Get Notified
+                    </button>
+                </form>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="backstory">
+                <strong>The backstory:</strong> I found out about this DoorDash promo a while back but kept missing it because who has time to check NBA scores every single day? So I built this little tool to handle it automatically. Your email stays 100% private - I'll never share it with anyone, and you can unsubscribe with one click anytime.
+            </div>
+
+            <div class="promo-image">
+                <img src="doordash-promo.jpg" alt="DoorDash NBA50 Promotion - 50% off when any player scores 50+ points">
+                <p>Here's what the actual DoorDash promo looks like</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            Free service · Unsubscribe anytime via email link · ~15-20 alerts per NBA season
         </div>
     </div>
 
@@ -859,143 +615,6 @@
                 submitBtn.textContent = 'Get Notified';
             }
         });
-
-        // 50+ SCORERS FUNCTIONALITY
-        const scorersListEl = document.getElementById('scorersList');
-        const seasonLabelEl = document.getElementById('seasonLabel');
-
-        // Get current NBA season
-        function getCurrentSeason() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1; // 1-12
-
-            // NBA season typically starts in October
-            if (month >= 10) {
-                return `${year}-${(year + 1).toString().slice(2)}`;
-            } else {
-                return `${year - 1}-${year.toString().slice(2)}`;
-            }
-        }
-
-        // Format date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const options = { month: 'short', day: 'numeric', year: 'numeric' };
-            return date.toLocaleDateString('en-US', options);
-        }
-
-        // Fetch 50+ point games from ESPN API
-        async function fetch50PlusScorers() {
-            try {
-                const season = getCurrentSeason();
-                seasonLabelEl.textContent = `${season} Season`;
-
-                // Fetch recent NBA games (we'll check the last 200 days)
-                const today = new Date();
-                const startDate = new Date(today);
-                startDate.setDate(today.getDate() - 200); // Last ~6-7 months
-
-                const scorers = [];
-
-                // Format dates for ESPN API
-                const startDateStr = startDate.toISOString().split('T')[0].replace(/-/g, '');
-                const endDateStr = today.toISOString().split('T')[0].replace(/-/g, '');
-
-                // Fetch games in chunks (ESPN API limits)
-                const response = await fetch(
-                    `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=${startDateStr}-${endDateStr}&limit=300`
-                );
-
-                if (!response.ok) throw new Error('Failed to fetch games');
-
-                const data = await response.json();
-
-                // Process games to find 50+ point performances
-                if (data.events) {
-                    for (const game of data.events) {
-                        const gameDate = game.date;
-                        const competitions = game.competitions?.[0];
-
-                        if (!competitions) continue;
-
-                        // Check box score for 50+ scorers
-                        const gameId = game.id;
-
-                        try {
-                            const boxScoreResponse = await fetch(
-                                `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=${gameId}`
-                            );
-
-                            if (boxScoreResponse.ok) {
-                                const boxScore = await boxScoreResponse.json();
-
-                                // Check both teams
-                                boxScore.boxscore?.players?.forEach(team => {
-                                    team.statistics?.[0]?.athletes?.forEach(player => {
-                                        const points = parseInt(player.stats?.[0] || 0);
-
-                                        if (points >= 50) {
-                                            scorers.push({
-                                                date: gameDate,
-                                                name: player.athlete?.displayName || 'Unknown',
-                                                team: team.team?.abbreviation || 'Unknown',
-                                                points: points
-                                            });
-                                        }
-                                    });
-                                });
-                            }
-                        } catch (err) {
-                            // Skip this game if box score fails
-                            console.error('Box score error:', err);
-                        }
-                    }
-                }
-
-                // Sort by date (most recent first)
-                scorers.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                displayScorers(scorers);
-            } catch (error) {
-                console.error('Error fetching scorers:', error);
-                showEmptyState('Unable to load scorers. Please try again later.');
-            }
-        }
-
-        // Display scorers in the sidebar
-        function displayScorers(scorers) {
-            if (scorers.length === 0) {
-                showEmptyState('No 50+ point games yet this season. Check back soon!');
-                return;
-            }
-
-            scorersListEl.innerHTML = scorers.map(scorer => `
-                <div class="scorer-card">
-                    <div class="scorer-date">${formatDate(scorer.date)}</div>
-                    <div class="scorer-info">
-                        <div class="scorer-player">
-                            <div class="scorer-name">${scorer.name}</div>
-                            <div class="scorer-team">${scorer.team}</div>
-                        </div>
-                        <div class="scorer-points">${scorer.points}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Show empty state
-        function showEmptyState(message) {
-            scorersListEl.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">🏀</div>
-                    <div class="empty-state-text">${message}</div>
-                </div>
-            `;
-        }
-
-        // Load scorers on page load
-        fetch50PlusScorers();
     </script>
 </body>
 </html>
