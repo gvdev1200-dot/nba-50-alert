@@ -1,137 +1,110 @@
-# DoorDash 50 Points Tracker
+# NBA 50-Point Alert
 
-Automatically detects when NBA players score 50+ points to notify you about the DoorDash 50% OFF promotion.
+**Never miss DoorDash's 50% OFF promo again!**
 
-## What Does This Do?
+When any NBA player scores 50+ points, DoorDash gives DashPass members **50% off (up to $10)** the next day using code **NBA50**. This project automatically tracks those games and emails you when the promo is active.
 
-When any NBA player scores 50+ points in a game, DoorDash gives DashPass members 50% off (up to $10) the next day using code **NBA50**. This script automatically checks for those games so you never miss the promotion!
+**Live site:** https://gvdev1200-dot.github.io/nba-50-alert/
 
-## Quick Start
+---
 
-```bash
-# Install dependencies
-pip install -r requirements.txt
+## How It Works
 
-# Run the main checker
-python src/nba_50_checker.py
+1. An NBA player scores 50+ points in a game
+2. The next morning, you get an email alert
+3. Use code **NBA50** on DoorDash for 50% off
 
-# Run tests
-python tests/test_specific_date.py
-```
+**Promo timing:** Valid from 9:00 AM PT until 11:59 PM PT the day after the 50-point game.
+
+---
+
+## Features
+
+- **Automatic email alerts** - Get notified the morning the promo is active
+- **Live promo status** - Website shows if promo is active today
+- **50+ Club tracker** - See all 50-point performances this season
+- **Click-to-copy promo code** - One click to copy NBA50
+- **100% free** - No cost, no spam, unsubscribe anytime
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Website | Static HTML/CSS/JS on GitHub Pages |
+| Email alerts | EmailOctopus |
+| Daily automation | GitHub Actions (runs at 2 AM UTC) |
+| NBA data | ESPN API |
+| Contact form | Web3Forms |
+
+---
 
 ## Project Structure
 
 ```
-doordash50points/
-├── src/                      # Main Python script
-│   └── nba_50_checker.py    # Core checker with email notifications
-├── tests/                    # Test scripts
-├── docs/                     # Documentation and guides
-├── google-apps-script/       # Automated Google Apps Script versions
-├── website/                  # Web interface (optional)
-├── archive/                  # Old versions and debug scripts
-├── requirements.txt          # Python dependencies
-└── config.json.example       # Configuration template
+nba-50-alert/
+├── index.html                     # Main website
+├── unsubscribe.html               # Unsubscribe page
+├── doordash-promo.jpg             # Promo image
+├── data/
+│   ├── 50_club.json               # All 50+ scorers this season
+│   └── emails.json                # Sent alerts history
+├── src/
+│   ├── generate_50_club_data.py   # Fetches NBA data from ESPN
+│   └── send_email_alerts.py       # Sends email campaigns
+├── .github/workflows/
+│   └── update-50-club-data.yml    # Daily automation
+├── LICENSE                        # MIT License
+└── README.md                      # This file
 ```
 
-## How to Use
+---
 
-### Quick Test (Recommended First Step)
+## Contributing
 
-Test with specific dates from the 2024-25 season:
+This project is open source under the MIT License. Contributions welcome!
+
+Ideas for contributions:
+- Add SMS notifications
+- Support other sports/promos
+- Improve the design
+- Add more stats/analytics
+
+To contribute:
+1. Fork this repo
+2. Make your changes
+3. Submit a pull request
+
+---
+
+## Local Development
 
 ```bash
-python tests/test_specific_date.py
+# Clone the repo
+git clone https://github.com/gvdev1200-dot/nba-50-alert.git
+cd nba-50-alert
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run the data generator manually
+python src/generate_50_club_data.py
+
+# Open the website locally
+open index.html  # or just double-click it
 ```
 
-### Check Yesterday's Games
+---
 
-Run the main script to check if anyone scored 50+ yesterday:
+## License
 
-```bash
-python src/nba_50_checker.py
-```
+MIT License - see [LICENSE](LICENSE) file.
 
-### Automated Daily Checks
+---
 
-For automated notifications, see:
-- `google-apps-script/` - Runs automatically via Google Apps Script
-- `docs/QUICK_START.md` - Setup instructions
+## Author
 
-## Example Output
+Built by [@gvdev1200-dot](https://github.com/gvdev1200-dot)
 
-When a 50+ point game is found:
-
-```
-============================================================
-RESULTS
-============================================================
-
-*** DoorDash 50% OFF promotion is ACTIVE today! ***
-
-  * De'Aaron Fox (SAC) - 60 POINTS!
-
-------------------------------------------------------------
-Email notification would be sent:
-------------------------------------------------------------
-
-  Subject: DoorDash 50% OFF Today! - NBA50
-
-  Body:
-  De'Aaron Fox scored 60 points last night!
-
-  Use code: NBA50
-  Valid today until 11:59 PM PT
-  Save 50% off (up to $10) on DoorDash delivery
-```
-
-When NO 50+ point games found:
-
-```
-No 50+ point performances yesterday.
-No email would be sent (avoiding spam).
-```
-
-## Requirements
-
-- Python 3.7 or higher (You have Python 3.13 ✓)
-- `requests` library (installed via `pip install -r requirements.txt`)
-
-## How It Works
-
-1. **Efficient**: Only checks completed games (no wasted API calls)
-2. **Accurate**: Uses official NBA Stats API (same data as NBA.com)
-3. **Smart**: Checks actual box scores, not news articles
-4. **Fast**: Typically completes in 10-30 seconds depending on number of games
-
-## API Details
-
-- **Source**: stats.nba.com (official NBA stats)
-- **Endpoints Used**:
-  - `scoreboardV2` - Gets game schedule and status
-  - `boxscoretraditionalv2` - Gets player statistics
-- **Rate Limits**: No authentication needed, reasonable rate limits
-- **Reliability**: Very stable, same API used by NBA.com
-
-## Next Steps
-
-Once you verify the core functionality is working (which it is!), we can add:
-
-1. **Automated Scheduling**
-   - Google Apps Script (runs automatically every day)
-   - Or GitHub Actions (runs in the cloud)
-
-2. **Email Notifications**
-   - Send you an email at 8 AM when the promo is active
-   - Include player names and promo code
-
-3. **Multiple Recipients** (Optional for future)
-   - Google Form for signup
-   - Send to distribution list
-
-## Notes
-
-- 50-point games are rare (only ~15-20 per NBA season)
-- The script handles dates during the off-season gracefully
-- No email spam - only notifies when 50+ points actually happened
-- The promotion is valid the day AFTER a 50-point game
+*Not affiliated with DoorDash or the NBA.*
