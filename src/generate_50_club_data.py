@@ -295,7 +295,7 @@ def main():
     # Determine output path
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
-    output_path = project_root / 'website' / 'data' / '50_club.json'
+    output_path = project_root / 'data' / '50_club.json'
 
     # Create generator
     generator = SeasonClubGenerator(output_path)

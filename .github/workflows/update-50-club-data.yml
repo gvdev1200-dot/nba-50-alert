@@ -36,7 +36,7 @@ jobs:
 
       - name: Validate JSON output
         run: |
-          python -c "import json; json.load(open('website/data/50_club.json'))"
+          python -c "import json; json.load(open('data/50_club.json'))"
 
       - name: Send email alerts
         env:
@@ -50,7 +50,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add website/data/50_club.json website/data/emails.json
+          git add data/50_club.json data/emails.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
