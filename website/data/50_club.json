@@ -1,8 +1,8 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2025-11-27T05:30:09.555898",
+  "lastUpdated": "2025-11-27T17:22:47.826649",
   "lastCheckedDate": "2025-11-27",
-  "totalGames": 571,
+  "totalGames": 289,
   "scorers": [
     {
       "date": "2025-11-22",
@@ -12,39 +12,32 @@
       "opponent": "CHA"
     },
     {
-      "date": "2025-11-21",
+      "date": "2025-11-20",
       "player": "Tyrese Maxey",
       "team": "PHI",
       "points": 54,
       "opponent": "MIL"
     },
     {
-      "date": "2025-11-13",
+      "date": "2025-11-12",
       "player": "Nikola Jokic",
       "team": "DEN",
       "points": 55,
       "opponent": "LAC"
     },
     {
-      "date": "2025-10-28",
+      "date": "2025-10-27",
       "player": "Lauri Markkanen",
       "team": "UTAH",
       "points": 51,
       "opponent": "PHX"
     },
     {
-      "date": "2025-10-27",
+      "date": "2025-10-26",
       "player": "Austin Reaves",
       "team": "LAL",
       "points": 51,
       "opponent": "SAC"
-    },
-    {
-      "date": "2025-10-24",
-      "player": "Aaron Gordon",
-      "team": "DEN",
-      "points": 50,
-      "opponent": "GS"
     },
     {
       "date": "2025-10-23",
@@ -52,6 +45,13 @@
       "team": "OKC",
       "points": 55,
       "opponent": "IND"
+    },
+    {
+      "date": "2025-10-23",
+      "player": "Aaron Gordon",
+      "team": "DEN",
+      "points": 50,
+      "opponent": "GS"
     }
   ]
 }

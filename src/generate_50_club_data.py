@@ -4,7 +4,7 @@ Uses incremental updates - only scans new games since last check
 """
 
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 import os
 from pathlib import Path
@@ -81,13 +81,18 @@ class SeasonClubGenerator:
 
                 if status == 'STATUS_FINAL':
                     game_date = event.get('date', '')
-                    # Parse ISO date
+                    # Parse ISO date and convert to US Eastern Time for correct game date
                     if game_date:
-                        date_obj = datetime.fromisoformat(game_date.replace('Z', '+00:00'))
+                        # Parse UTC time
+                        date_obj_utc = datetime.fromisoformat(game_date.replace('Z', '+00:00'))
+
+                        # Convert to US Eastern Time (UTC-5 or UTC-4 depending on DST)
+                        # Subtract 5 hours to get ET (approximation - covers most NBA games)
+                        date_obj_et = date_obj_utc - timedelta(hours=5)
 
                         games_list.append({
                             'game_id': event['id'],
-                            'date': date_obj.strftime('%Y-%m-%d'),
+                            'date': date_obj_et.strftime('%Y-%m-%d'),
                             'name': event.get('shortName', 'Unknown'),
                             'home_team': event.get('competitions', [{}])[0].get('competitors', [{}])[0].get('team', {}).get('abbreviation', ''),
                             'away_team': event.get('competitions', [{}])[0].get('competitors', [{}])[1].get('team', {}).get('abbreviation', '')
