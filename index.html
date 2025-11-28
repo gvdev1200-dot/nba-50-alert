@@ -417,6 +417,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* EmailOctopus Form Wrapper */
+        .emailoctopus-form-wrapper {
+            margin: 10px 0;
+        }
+
         /* MAIN CONTENT BELOW FOLD */
         .main-content {
             display: grid;
@@ -1026,26 +1031,12 @@
                     <span class="copy-hint" id="copyHint">Click to copy</span>
                 </div>
 
-                <div id="message" class="message"></div>
-
-                <form id="signupForm">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="you@example.com"
-                            required
-                        >
-                    </div>
-                    <button type="submit" class="btn" id="submitBtn">
-                        Get Notified 🔔
-                    </button>
-                </form>
+                <div class="emailoctopus-form-wrapper">
+                    <script async src="https://eocampaign1.com/form/779a3ef0-cc28-11f0-a1d8-a5e835536a2c.js" data-form="779a3ef0-cc28-11f0-a1d8-a5e835536a2c"></script>
+                </div>
 
                 <div class="cta-footer">
-                    <span class="subscriber-count" id="subscriberCount"></span> · Unsubscribe anytime
+                    Unsubscribe anytime
                 </div>
 
                 <a href="#contact" class="idea-link">💡 Got a cool idea? Let me know!</a>
@@ -1136,7 +1127,6 @@
     <script>
         // API Keys
         const WEB3FORMS_KEY = 'e991c9d7-f928-4722-a9ea-ba20f35a4326'; // Contact form only
-        const EMAILOCTOPUS_LIST_ID = '571d8d58-cc23-11f0-aeb6-6fbbc4d23873'; // Subscribe form
 
         // Copy promo code to clipboard
         function copyPromoCode() {
@@ -1150,64 +1140,6 @@
                 }, 2000);
             });
         }
-
-        // SUBSCRIBE FORM - Uses EmailOctopus
-        const form = document.getElementById('signupForm');
-        const emailInput = document.getElementById('email');
-        const submitBtn = document.getElementById('submitBtn');
-        const messageDiv = document.getElementById('message');
-
-        function showMessage(text, type) {
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type} show`;
-            setTimeout(() => {
-                messageDiv.classList.remove('show');
-            }, 5000);
-        }
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = emailInput.value.trim();
-
-            if (!email) {
-                showMessage('Please enter a valid email address.', 'error');
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Subscribing...';
-
-            try {
-                // EmailOctopus public form endpoint (no API key exposed)
-                const response = await fetch(`https://emailoctopus.com/lists/${EMAILOCTOPUS_LIST_ID}/members/embedded/1.3/add`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email_address: email,
-                        status: 'SUBSCRIBED'
-                    })
-                });
-
-                if (response.ok || response.status === 200) {
-                    showMessage('✓ Success! You\'ll get alerts when the promo is active.', 'success');
-                    emailInput.value = '';
-                } else {
-                    const result = await response.json();
-                    if (result.error && result.error.code === 'MEMBER_EXISTS_WITH_EMAIL_ADDRESS') {
-                        showMessage('You\'re already subscribed!', 'success');
-                        emailInput.value = '';
-                    } else {
-                        throw new Error('Failed');
-                    }
-                }
-            } catch (error) {
-                showMessage('Error subscribing. Please try again.', 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Get Notified 🔔';
-            }
-        });
 
         // 50+ SCORERS FUNCTIONALITY
         const scorersListEl = document.getElementById('scorersList');
@@ -1261,15 +1193,6 @@
                 const lastUpdatedEl = document.getElementById('lastUpdated');
                 const updated = new Date(data.lastUpdated);
                 lastUpdatedEl.textContent = `Updated: ${updated.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} at ${updated.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
-            }
-
-            // Show subscriber count
-            const subCountEl = document.getElementById('subscriberCount');
-            const count = data.subscriberCount || 0;
-            if (count > 0) {
-                subCountEl.textContent = `✓ Join ${count} subscriber${count !== 1 ? 's' : ''}`;
-            } else {
-                subCountEl.textContent = '✓ Be the first to join!';
             }
 
             if (data.scorers && data.scorers.length > 0) {
