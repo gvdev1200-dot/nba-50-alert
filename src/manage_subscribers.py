@@ -110,7 +110,7 @@ def main():
     """CLI for managing subscribers"""
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
-    emails_json = project_root / 'website' / 'data' / 'emails.json'
+    emails_json = project_root / 'data' / 'emails.json'
 
     manager = SubscriberManager(emails_json)
 

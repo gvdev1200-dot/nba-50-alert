@@ -277,8 +277,8 @@ def main():
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
 
-    emails_json = project_root / 'website' / 'data' / 'emails.json'
-    club_data_json = project_root / 'website' / 'data' / '50_club.json'
+    emails_json = project_root / 'data' / 'emails.json'
+    club_data_json = project_root / 'data' / '50_club.json'
 
     sender = EmailAlertSender(emails_json, club_data_json)
     success = sender.send_alerts()
