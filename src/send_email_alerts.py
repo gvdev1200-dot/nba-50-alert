@@ -161,7 +161,7 @@ class EmailAlertSender:
                         <li>Get 50% off (up to $10 savings)!</li>
                     </ol>
 
-                    <p style="color: #ff6600; font-weight: bold;">⏰ This promo is only valid TODAY, so use it before midnight!</p>
+                    <p style="color: #ff6600; font-weight: bold;">⏰ Valid TODAY from 9:00 AM PT until 11:59 PM PT — don't miss it!</p>
                 </div>
 
                 <div class="footer">
