@@ -18,31 +18,31 @@ A website that notifies users when an NBA player scores 50+ points, which activa
 |---------|---------|---------|
 | **GitHub Pages** | Website hosting | Auto-deploys on push to main |
 | **GitHub Actions** | Daily data updates | Runs at 2 AM UTC daily |
-| **EmailOctopus** | Email subscriptions + alerts | Handles both subscribe form AND sending alerts |
-| **Web3Forms** | Contact form only | Key: `e991c9d7-f928-4722-a9ea-ba20f35a4326` |
+| **EmailOctopus** | Email subscriptions + alerts | Embedded form + campaign sending |
+| **Web3Forms** | Contact form only | Key is public (designed for client-side) |
 | **ESPN API** | NBA scores data | Free, no key needed |
 
 ### Services We DO NOT Use:
-- ❌ Google Apps Script - never use
-- ❌ Google Sheets - never use
-- ❌ SendGrid - replaced by EmailOctopus
-- ❌ Any manual processes
+- Google Apps Script - never use
+- Google Sheets - never use
+- SendGrid - replaced by EmailOctopus
+- Any manual processes
 
 ---
 
-## Website Features (All Working ✅)
+## Website Features (All Working)
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Live promo status banner | ✅ | Shows if promo is active today |
-| Click-to-copy promo code | ✅ | Click NBA50 to copy |
-| 50+ Club sidebar | ✅ | All scorers this season |
-| Last updated timestamp | ✅ | Shows when data was refreshed |
-| Subscriber count | ✅ | Dynamic from EmailOctopus |
-| Subscribe form | ✅ | EmailOctopus - direct subscription |
-| Contact form | ✅ | Web3Forms - emails you messages |
-| Smooth scroll | ✅ | "Got ideas?" link scrolls to contact |
-| Mobile responsive | ✅ | Works on all screen sizes |
+| Live promo status banner | Done | Shows if promo is active today |
+| Click-to-copy promo code | Done | Click NBA50 to copy |
+| 50+ Club sidebar | Done | All scorers this season |
+| Last updated timestamp | Done | Shows when data was refreshed |
+| Subscribe form | Done | EmailOctopus embedded form |
+| Contact form | Done | Web3Forms - emails you messages |
+| Smooth scroll | Done | "Got ideas?" link scrolls to contact |
+| Mobile responsive | Done | Works on all screen sizes |
+| Open source footer | Done | Links to GitHub repo |
 
 ---
 
@@ -57,10 +57,10 @@ A website that notifies users when an NBA player scores 50+ points, which activa
 6. GitHub Pages auto-deploys updated site
 
 ### User Subscription Flow:
-1. User enters email on website
-2. EmailOctopus API adds them directly to the list
+1. User enters email on website (EmailOctopus embedded form)
+2. EmailOctopus adds them directly to the list
 3. User automatically receives alerts when promo is active
-4. **No manual work needed!**
+4. Unsubscribe link in every email (handled by EmailOctopus)
 
 ### Contact Form Flow:
 1. User fills out contact form
@@ -78,7 +78,6 @@ A website that notifies users when an NBA player scores 50+ points, which activa
   "lastUpdated": "2025-11-27T...",
   "lastCheckedDate": "2025-11-27",
   "totalGames": 289,
-  "subscriberCount": 0,
   "scorers": [...]
 }
 ```
@@ -89,7 +88,7 @@ A website that notifies users when an NBA player scores 50+ points, which activa
   "sent_alerts": ["2025-11-22_James Harden_55"]
 }
 ```
-Note: `emails.json` only tracks sent alerts now. Subscribers are stored in EmailOctopus.
+Note: Only tracks sent alerts. Subscribers are stored in EmailOctopus.
 
 ---
 
@@ -101,44 +100,22 @@ EMAILOCTOPUS_LIST_ID   - EmailOctopus list ID for subscribers
 
 ---
 
-## EmailOctopus Setup
-
-### API Credentials (stored in GitHub Secrets):
-- **API Key**: Set as `EMAILOCTOPUS_API_KEY` secret
-- **List ID**: Set as `EMAILOCTOPUS_LIST_ID` secret
-
-### Website Integration:
-The subscribe form in `website/index.html` uses EmailOctopus embedded form API:
-```javascript
-const EMAILOCTOPUS_LIST_ID = '571d8d58-cc23-11f0-aeb6-6fbbc4d23873';
-// Posts to: https://emailoctopus.com/lists/{LIST_ID}/members/embedded/1.3/add
-```
-
-### Email Alerts:
-The `src/send_email_alerts.py` script:
-1. Gets subscriber count from EmailOctopus API
-2. Creates a campaign with promo details
-3. Sends to all subscribers in the list
-
----
-
 ## File Structure
 ```
-Doordash-50points/
+nba-50-alert/
 ├── .github/workflows/
 │   └── update-50-club-data.yml    # Daily automation
 ├── data/
 │   ├── 50_club.json               # Scorers + stats
 │   └── emails.json                # Sent alerts history
 ├── src/
-│   ├── nba_50_checker.py          # CLI checker (manual use)
 │   ├── generate_50_club_data.py   # Updates 50_club.json
 │   └── send_email_alerts.py       # EmailOctopus email sender
-├── website/
-│   ├── index.html                 # Main website
-│   ├── unsubscribe.html           # Unsubscribe page
-│   └── data/                      # Symlink to ../data
+├── index.html                     # Main website
+├── unsubscribe.html               # Unsubscribe page (redirects to EmailOctopus)
+├── doordash-promo.jpg             # Promo image
 ├── CLAUDE.md                      # THIS FILE - project context
+├── LICENSE                        # MIT License
 └── README.md                      # Public readme
 ```
 
@@ -147,14 +124,14 @@ Doordash-50points/
 ## Quick Commands
 
 ```bash
-# Run NBA checker manually
-py Doordash-50points/src/nba_50_checker.py
+# Run data generator manually
+py src/generate_50_club_data.py
 
 # Open the website locally
-start Doordash-50points/website/index.html
+start index.html
 
 # Check git status
-git -C Doordash-50points status
+git status
 ```
 
 ---
@@ -171,15 +148,13 @@ git -C Doordash-50points status
 
 ## Recent Changes (2025-11-27)
 
-- ✅ Redesigned website for compact layout
-- ✅ Added live promo status banner
-- ✅ Added click-to-copy promo code
-- ✅ Added subscriber count display
-- ✅ Added last updated timestamp
-- ✅ Added contact form with Web3Forms
-- ✅ Improved mobile responsiveness
-- ✅ Removed old backup files
-- ✅ **Migrated from SendGrid to EmailOctopus** for email alerts
-- ✅ **Subscribe form now uses EmailOctopus directly** (no manual work needed)
-- ✅ Updated GitHub Actions workflow for EmailOctopus
-- ✅ Updated CLAUDE.md with full project context
+- Redesigned website for compact layout
+- Added live promo status banner
+- Added click-to-copy promo code
+- Added contact form with Web3Forms
+- Improved mobile responsiveness
+- Migrated from SendGrid to EmailOctopus for email alerts
+- Subscribe form now uses EmailOctopus embedded form
+- Added MIT license (open source)
+- Added GitHub link in footer
+- Cleaned up project structure (removed /website folder, deprecated files)
