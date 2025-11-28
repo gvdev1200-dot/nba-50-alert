@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,19 +16,17 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
+            line-height: 1.5;
             color: #e8eaed;
             background: #0a0e27;
             background-image:
-                radial-gradient(circle at 20% 50%, rgba(255, 102, 0, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 102, 0, 0.06) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(255, 102, 0, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 102, 0, 0.08) 0%, transparent 40%);
             min-height: 100vh;
-            padding: 20px;
-            position: relative;
             overflow-x: hidden;
         }
 
-        /* Subtle basketball texture */
+        /* Subtle texture */
         body::before {
             content: '';
             position: fixed;
@@ -36,250 +34,271 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6600' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.4;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6600' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 0;
         }
 
         .page-wrapper {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 16px;
             position: relative;
             z-index: 1;
         }
 
-        .main-layout {
+        /* Status Banner */
+        .status-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-banner.active {
+            background: rgba(52, 211, 153, 0.15);
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .status-banner.inactive {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #5f6368;
+        }
+
+        .status-banner.active .status-dot {
+            background: #34d399;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        .status-banner.inactive .status-dot {
+            background: #5f6368;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            color: #9aa0a6;
+        }
+
+        .status-banner.active .status-text {
+            color: #6ee7b7;
+        }
+
+        /* HERO SECTION - Compact with CTA */
+        .hero {
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 40px;
-            align-items: start;
+            grid-template-columns: 1fr 340px;
+            gap: 32px;
+            align-items: center;
+            min-height: calc(100vh - 32px);
+            padding: 20px 0;
         }
 
-        .container {
-            position: relative;
+        .hero-content {
+            max-width: 600px;
         }
 
-        /* Hero number background */
-        .hero-number {
-            position: absolute;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 280px;
-            font-weight: 900;
-            color: rgba(255, 102, 0, 0.05);
-            line-height: 1;
-            pointer-events: none;
-            user-select: none;
-            z-index: 0;
-        }
-
-        .header {
-            text-align: center;
-            padding: 80px 20px 60px;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 56px;
-            font-weight: 900;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 102, 0, 0.15);
+            border: 1px solid rgba(255, 102, 0, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ff9933;
             margin-bottom: 16px;
+        }
+
+        .hero-badge span {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero h1 .highlight {
             background: linear-gradient(135deg, #ff6600 0%, #ff9933 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
-            position: relative;
-            z-index: 1;
         }
 
-        .header .subtitle {
-            font-size: 20px;
-            color: #9aa0a6;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .header .tagline {
-            font-size: 18px;
-            color: #5f6368;
-            font-weight: 400;
-        }
-
-        .content {
-            position: relative;
-        }
-
-        /* Hero text section */
-        .hero-text {
-            text-align: center;
-            margin-bottom: 48px;
-            padding: 0 20px;
-        }
-
-        .hero-text h2 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
-        }
-
-        .hero-text p {
+        .hero-subtitle {
             font-size: 18px;
             color: #9aa0a6;
-            max-width: 560px;
-            margin: 0 auto;
-            line-height: 1.7;
+            margin-bottom: 24px;
+            line-height: 1.6;
         }
 
-        /* Benefits section - glass morphism cards */
-        .benefits {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
             gap: 16px;
-            margin-bottom: 48px;
-            padding: 0 20px;
+            margin-bottom: 20px;
         }
 
-        .benefit {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 102, 0, 0.1);
-            border-radius: 16px;
-            padding: 24px 20px;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #bdc1c6;
         }
 
-        .benefit::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .benefit:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 102, 0, 0.3);
-            box-shadow: 0 8px 24px rgba(255, 102, 0, 0.15);
-        }
-
-        .benefit:hover::before {
-            opacity: 1;
-        }
-
-        .benefit-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 16px;
-            background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
+        .hero-feature-icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 102, 0, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            position: relative;
-            z-index: 1;
+            font-size: 10px;
         }
 
-        .benefit-text {
-            font-size: 15px;
-            color: #e8eaed;
-            font-weight: 500;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Promo code box */
-        .promo-code {
-            background: linear-gradient(135deg, rgba(255, 102, 0, 0.08) 0%, rgba(255, 136, 0, 0.05) 100%);
-            border: 2px dashed rgba(255, 102, 0, 0.3);
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-            margin: 0 20px 48px;
+        /* CTA CARD */
+        .cta-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            border-radius: 20px;
+            padding: 28px;
             position: relative;
             overflow: hidden;
         }
 
-        .promo-code::before {
-            content: '';
+        .cta-card::before {
+            content: '50';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255, 102, 0, 0.05) 50%, transparent 70%);
-            animation: shimmer 3s infinite;
+            top: -20px;
+            right: -10px;
+            font-size: 100px;
+            font-weight: 900;
+            color: rgba(255, 102, 0, 0.06);
+            line-height: 1;
+            pointer-events: none;
         }
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .promo-code-label {
-            font-size: 14px;
-            color: #9aa0a6;
-            margin-bottom: 12px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .cta-header {
+            text-align: center;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
 
-        .promo-code code {
-            font-family: 'Inter', monospace;
-            font-size: 48px;
-            font-weight: 900;
-            color: #ff6600;
+        .cta-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .cta-header p {
+            font-size: 13px;
+            color: #9aa0a6;
+        }
+
+        .promo-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.2) 0%, rgba(255, 136, 0, 0.1) 100%);
+            border: 1px dashed rgba(255, 102, 0, 0.4);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .promo-badge-label {
+            font-size: 10px;
+            color: #9aa0a6;
+            text-transform: uppercase;
             letter-spacing: 0.1em;
             display: block;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 4px;
         }
 
-        /* Form container */
-        .form-container {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 102, 0, 0.15);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 0 20px 64px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        .promo-badge code {
+            font-family: 'Inter', monospace;
+            font-size: 28px;
+            font-weight: 900;
+            color: #ff6600;
+            letter-spacing: 0.08em;
+        }
+
+        .promo-badge {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .promo-badge:hover {
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.3) 0%, rgba(255, 136, 0, 0.2) 100%);
+            border-color: rgba(255, 102, 0, 0.6);
+        }
+
+        .copy-hint {
+            display: block;
+            font-size: 10px;
+            color: #9aa0a6;
+            margin-top: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-hint.copied {
+            color: #6ee7b7;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #ffffff;
-            font-size: 15px;
+            font-size: 13px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 16px 20px;
-            font-size: 16px;
+            padding: 14px 16px;
+            font-size: 15px;
             font-family: 'Inter', sans-serif;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.3s ease;
             color: #ffffff;
         }
@@ -292,21 +311,21 @@
             outline: none;
             border-color: #ff6600;
             background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.15);
         }
 
         .btn {
             width: 100%;
-            padding: 18px 32px;
-            font-size: 18px;
+            padding: 14px 24px;
+            font-size: 16px;
             font-weight: 700;
             color: #ffffff;
             background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px rgba(255, 102, 0, 0.3);
+            box-shadow: 0 4px 16px rgba(255, 102, 0, 0.35);
             position: relative;
             overflow: hidden;
             font-family: 'Inter', sans-serif;
@@ -325,15 +344,11 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 102, 0, 0.4), 0 0 40px rgba(255, 102, 0, 0.2);
+            box-shadow: 0 6px 24px rgba(255, 102, 0, 0.5);
         }
 
         .btn:hover::before {
             left: 100%;
-        }
-
-        .btn:active {
-            transform: translateY(0);
         }
 
         .btn:disabled {
@@ -342,14 +357,42 @@
             transform: none;
         }
 
+        .cta-footer {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .subscriber-count {
+            color: #6ee7b7;
+        }
+
+        .idea-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 13px;
+            color: #ff9933;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .idea-link:hover {
+            color: #ff6600;
+        }
+
         /* Message notifications */
         .message {
-            padding: 16px 20px;
-            border-radius: 12px;
-            margin-bottom: 24px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 14px;
             display: none;
             font-weight: 500;
-            border-left: 4px solid;
+            font-size: 13px;
+            border-left: 3px solid;
         }
 
         .message.success {
@@ -370,70 +413,105 @@
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Court line divider */
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.3), transparent);
-            margin: 64px 40px;
+        /* MAIN CONTENT BELOW FOLD */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 32px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Backstory section */
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* How it works */
+        .how-it-works {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .how-it-works h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: #bdc1c6;
+            padding-top: 4px;
+        }
+
+        /* Backstory */
         .backstory {
             background: rgba(255, 255, 255, 0.02);
-            border-left: 4px solid #ff6600;
-            border-radius: 12px;
-            padding: 32px;
-            margin: 0 20px 48px;
-            font-size: 15px;
-            line-height: 1.8;
+            border-left: 3px solid #ff6600;
+            border-radius: 0 12px 12px 0;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.7;
             color: #9aa0a6;
         }
 
         .backstory strong {
             color: #ffffff;
-            font-size: 16px;
             font-weight: 600;
         }
 
         /* Promo image */
         .promo-image {
-            margin: 0 20px 64px;
             text-align: center;
         }
 
         .promo-image img {
             max-width: 100%;
             height: auto;
-            border-radius: 16px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 102, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 102, 0, 0.15);
         }
 
         .promo-image p {
-            font-size: 14px;
+            font-size: 12px;
             color: #5f6368;
-            margin-top: 16px;
+            margin-top: 10px;
             font-style: italic;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 32px 20px;
-            color: #5f6368;
-            font-size: 13px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 40px;
         }
 
         /* 50+ CLUB SIDEBAR */
@@ -445,29 +523,25 @@
         }
 
         .sidebar::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 3px;
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 102, 0, 0.3);
+            background: rgba(255, 102, 0, 0.25);
             border-radius: 3px;
         }
 
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 102, 0, 0.5);
-        }
-
         .club-header {
-            background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 136, 0, 0.08) 100%);
-            border: 2px solid rgba(255, 102, 0, 0.3);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.12) 0%, rgba(255, 136, 0, 0.06) 100%);
+            border: 1px solid rgba(255, 102, 0, 0.25);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -479,25 +553,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 120px;
+            font-size: 80px;
             font-weight: 900;
-            color: rgba(255, 102, 0, 0.08);
+            color: rgba(255, 102, 0, 0.06);
             z-index: 0;
         }
 
         .club-header h3 {
-            font-size: 24px;
-            font-weight: 900;
+            font-size: 18px;
+            font-weight: 800;
             color: #ff6600;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             position: relative;
             z-index: 1;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
         }
 
         .club-header p {
-            font-size: 13px;
+            font-size: 12px;
             color: #9aa0a6;
             position: relative;
             z-index: 1;
@@ -505,68 +579,56 @@
 
         .season-label {
             display: inline-block;
-            background: rgba(255, 102, 0, 0.2);
+            background: rgba(255, 102, 0, 0.15);
             color: #ff9933;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
             font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .last-updated {
+            font-size: 10px;
+            color: #5f6368;
             margin-top: 8px;
         }
 
         .scorers-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .scorer-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 102, 0, 0.15);
-            border-radius: 16px;
-            padding: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 102, 0, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            transition: all 0.2s ease;
             position: relative;
-            overflow: hidden;
-        }
-
-        .scorer-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, #ff6600, #ff8800);
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
 
         .scorer-card:hover {
-            transform: translateX(4px);
-            border-color: rgba(255, 102, 0, 0.4);
-            box-shadow: 0 4px 16px rgba(255, 102, 0, 0.2);
-        }
-
-        .scorer-card:hover::before {
-            opacity: 1;
+            transform: translateX(3px);
+            border-color: rgba(255, 102, 0, 0.3);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .scorer-date {
-            font-size: 11px;
+            font-size: 10px;
             color: #5f6368;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
         }
 
         .scorer-info {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
         }
 
         .scorer-player {
@@ -575,43 +637,43 @@
         }
 
         .scorer-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .scorer-team {
-            font-size: 13px;
+            font-size: 12px;
             color: #9aa0a6;
         }
 
         .scorer-points {
             background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
             color: #ffffff;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 900;
-            padding: 8px 16px;
-            border-radius: 12px;
-            min-width: 60px;
+            padding: 6px 12px;
+            border-radius: 10px;
+            min-width: 52px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+            box-shadow: 0 3px 10px rgba(255, 102, 0, 0.3);
         }
 
         .loading-spinner {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: #5f6368;
         }
 
         .spinner {
             display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 102, 0, 0.1);
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 102, 0, 0.1);
             border-top-color: #ff6600;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -623,24 +685,206 @@
 
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 16px;
             color: #5f6368;
         }
 
         .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+            font-size: 36px;
+            margin-bottom: 12px;
             opacity: 0.3;
         }
 
         .empty-state-text {
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
-        /* Responsive design */
-        @media (max-width: 1024px) {
-            .main-layout {
+        /* Contact Section */
+        .contact-section {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 32px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .contact-header p {
+            font-size: 13px;
+            color: #9aa0a6;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .contact-row input {
+            flex: 1;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: #5f6368;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #ff6600;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-contact {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            background: rgba(255, 102, 0, 0.2);
+            border: 1px solid rgba(255, 102, 0, 0.4);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-contact:hover {
+            background: rgba(255, 102, 0, 0.3);
+            border-color: #ff6600;
+        }
+
+        .btn-contact:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .contact-status {
+            text-align: center;
+            font-size: 13px;
+            min-height: 20px;
+        }
+
+        .contact-status.success {
+            color: #6ee7b7;
+        }
+
+        .contact-status.error {
+            color: #fca5a5;
+        }
+
+        @media (max-width: 480px) {
+            .contact-row {
+                flex-direction: column;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: #5f6368;
+            font-size: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 32px;
+        }
+
+        .footer-main {
+            margin-bottom: 8px;
+        }
+
+        .footer-opensource {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #9aa0a6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .github-link:hover {
+            color: #ff6600;
+        }
+
+        .github-link svg {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .status-banner {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+                gap: 24px;
+                padding: 32px 0;
+            }
+
+            .hero-content {
+                text-align: center;
+                max-width: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-features {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .cta-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .main-content {
                 grid-template-columns: 1fr;
             }
 
@@ -648,139 +892,194 @@
                 position: relative;
                 top: 0;
                 max-height: none;
-                margin-top: 40px;
             }
         }
 
-        @media (max-width: 640px) {
-            .hero-number {
-                font-size: 180px;
-                top: -40px;
+        @media (max-width: 480px) {
+            .page-wrapper {
+                padding: 10px;
             }
 
-            .header {
-                padding: 60px 20px 40px;
+            .status-banner {
+                font-size: 11px;
+                padding: 8px 10px;
+                border-radius: 8px;
             }
 
-            .header h1 {
-                font-size: 40px;
+            .status-text {
+                text-align: center;
+                line-height: 1.4;
             }
 
-            .header .subtitle {
+            .hero {
+                padding: 20px 0;
+            }
+
+            .hero-badge {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero-subtitle {
+                font-size: 14px;
+            }
+
+            .hero-features {
+                gap: 10px;
+            }
+
+            .hero-feature {
+                font-size: 13px;
+            }
+
+            .cta-card {
+                padding: 18px;
+                border-radius: 16px;
+            }
+
+            .cta-header h2 {
                 font-size: 18px;
             }
 
-            .header .tagline {
-                font-size: 16px;
+            .promo-badge {
+                padding: 8px 14px;
             }
 
-            .hero-text h2 {
-                font-size: 26px;
+            .promo-badge code {
+                font-size: 22px;
             }
 
-            .hero-text p {
-                font-size: 16px;
+            .form-group input {
+                padding: 12px 14px;
+                font-size: 14px;
             }
 
-            .benefits {
-                grid-template-columns: 1fr;
+            .btn {
+                padding: 12px 20px;
+                font-size: 15px;
             }
 
-            .promo-code {
-                padding: 24px;
+            .contact-section {
+                padding: 24px 12px;
             }
 
-            .promo-code code {
-                font-size: 36px;
-            }
-
-            .form-container {
-                padding: 28px 24px;
-            }
-
-            .club-header h3 {
-                font-size: 20px;
+            .contact-row {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
     <div class="page-wrapper">
-        <div class="main-layout">
-            <!-- Main Content -->
-            <div class="container">
-                <div class="hero-number">50</div>
+        <!-- Status Banner -->
+        <div class="status-banner" id="statusBanner">
+            <span class="status-dot"></span>
+            <span class="status-text" id="statusText">Checking promo status...</span>
+        </div>
 
-                <div class="header">
-                    <h1>NBA 50-Point Alert</h1>
-                    <p class="subtitle">Never Miss DoorDash 50% OFF</p>
-                    <p class="tagline">Automatic alerts when the promo activates</p>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>🏀</span> DoorDash NBA50 Promo Alert
                 </div>
-
-                <div class="content">
-                    <div class="hero-text">
-                        <h2>Get Notified When the Promo is Active</h2>
-                        <p>When any NBA player scores 50+ points, DoorDash gives DashPass members 50% off the next day. We'll email you so you never miss it!</p>
+                <h1>
+                    Never Miss <span class="highlight">50% OFF</span> DoorDash Again
+                </h1>
+                <p class="hero-subtitle">
+                    When any NBA player drops 50+ points, DashPass members get 50% off the next day. Get notified instantly so you never miss the savings.
+                </p>
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">✓</div>
+                        <span>Instant email alerts</span>
                     </div>
-
-                    <div class="benefits">
-                        <div class="benefit">
-                            <div class="benefit-icon">✉</div>
-                            <div class="benefit-text">Email alerts when promo is active</div>
-                        </div>
-                        <div class="benefit">
-                            <div class="benefit-icon">💰</div>
-                            <div class="benefit-text">Save 50% (up to $10) on DoorDash</div>
-                        </div>
-                        <div class="benefit">
-                            <div class="benefit-icon">🎯</div>
-                            <div class="benefit-text">No spam - only when it happens</div>
-                        </div>
-                        <div class="benefit">
-                            <div class="benefit-icon">🆓</div>
-                            <div class="benefit-text">100% free service</div>
-                        </div>
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">✓</div>
+                        <span>Save up to $10</span>
                     </div>
-
-                    <div class="promo-code">
-                        <div class="promo-code-label">The Promo Code</div>
-                        <code>NBA50</code>
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">✓</div>
+                        <span>100% free</span>
                     </div>
-
-                    <div id="message" class="message"></div>
-
-                    <div class="form-container">
-                        <form id="signupForm">
-                            <div class="form-group">
-                                <label for="email">Your Email Address</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="you@example.com"
-                                    required
-                                >
-                            </div>
-                            <button type="submit" class="btn" id="submitBtn">
-                                Get Notified
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <div class="backstory">
-                        <strong>The backstory:</strong> I found out about this DoorDash promo a while back but kept missing it because who has time to check NBA scores every single day? So I built this little tool to handle it automatically. Your email stays 100% private - I'll never share it with anyone, and you can unsubscribe with one click anytime.
-                    </div>
-
-                    <div class="promo-image">
-                        <img src="doordash-promo.jpg" alt="DoorDash NBA50 Promotion - 50% off when any player scores 50+ points">
-                        <p>Here's what the actual DoorDash promo looks like</p>
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">✓</div>
+                        <span>No spam</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="footer">
-                    Free service · Unsubscribe anytime via email link · ~15-20 alerts per NBA season
+            <!-- CTA CARD -->
+            <div class="cta-card">
+                <div class="cta-header">
+                    <h2>Get Notified</h2>
+                    <p>We'll email you when the promo is active</p>
+                </div>
+
+                <div class="promo-badge" id="promoBadge" onclick="copyPromoCode()" title="Click to copy">
+                    <span class="promo-badge-label">The Promo Code</span>
+                    <code>NBA50</code>
+                    <span class="copy-hint" id="copyHint">Click to copy</span>
+                </div>
+
+                <div id="message" class="message"></div>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+                    </div>
+                    <button type="submit" class="btn" id="submitBtn">
+                        Get Notified 🔔
+                    </button>
+                </form>
+
+                <div class="cta-footer">
+                    <span class="subscriber-count" id="subscriberCount"></span> · Unsubscribe anytime
+                </div>
+
+                <a href="#contact" class="idea-link">💡 Got a cool idea? Let me know!</a>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT -->
+        <section class="main-content">
+            <div class="content-section">
+                <div class="how-it-works">
+                    <h3>How It Works</h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-text">An NBA player scores 50+ points in a game</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-text">We send you an email notification the next morning</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-text">Use code <strong style="color: #ff6600;">NBA50</strong> on DoorDash for 50% off (up to $10)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="backstory">
+                    <strong>The backstory:</strong> I found out about this DoorDash promo but kept missing it because who has time to check NBA scores every day? So I built this tool to handle it automatically. Your email stays 100% private - never shared, one-click unsubscribe.
+                </div>
+
+                <div class="promo-image">
+                    <img src="doordash-promo.jpg" alt="DoorDash NBA50 Promotion - 50% off when any player scores 50+ points">
+                    <p>The actual DoorDash promo</p>
                 </div>
             </div>
 
@@ -790,27 +1089,74 @@
                     <h3>50+ Club</h3>
                     <p>Players who scored 50+ this season</p>
                     <div class="season-label" id="seasonLabel">2024-25 Season</div>
+                    <div class="last-updated" id="lastUpdated"></div>
                 </div>
                 <div id="scorersList" class="scorers-list">
                     <div class="loading-spinner">
                         <div class="spinner"></div>
-                        <p style="margin-top: 16px; font-size: 14px;">Loading scorers...</p>
+                        <p style="margin-top: 12px; font-size: 13px;">Loading...</p>
                     </div>
                 </div>
             </aside>
-        </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <div class="contact-header">
+                <h3>Got Ideas?</h3>
+                <p>Have a cool feature idea or feedback? Drop me a message!</p>
+            </div>
+            <form id="contactForm" class="contact-form">
+                <div class="contact-row">
+                    <input type="text" id="contactName" placeholder="Your name" required>
+                    <input type="email" id="contactEmail" placeholder="Your email" required>
+                </div>
+                <textarea id="contactMessage" placeholder="Your message..." rows="3" required></textarea>
+                <button type="submit" class="btn-contact" id="contactBtn">Send Message</button>
+                <div id="contactStatus" class="contact-status"></div>
+            </form>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-main">
+                Free service · Unsubscribe anytime · Not affiliated with DoorDash or the NBA
+            </div>
+            <div class="footer-opensource">
+                <a href="https://github.com/gvdev1200-dot/nba-50-alert" target="_blank" class="github-link">
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    Open Source
+                </a>
+                · Contributions welcome!
+            </div>
+        </footer>
     </div>
 
     <script>
-        // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCkNHR6dJGuvdjuSe3Bh5peJzfgl1tuqTVSsK8RBVGQelfqzgmVNEyK4nWNfcABKlq/exec';
+        // API Keys
+        const WEB3FORMS_KEY = 'e991c9d7-f928-4722-a9ea-ba20f35a4326'; // Contact form only
+        const EMAILOCTOPUS_LIST_ID = '571d8d58-cc23-11f0-aeb6-6fbbc4d23873'; // Subscribe form
 
+        // Copy promo code to clipboard
+        function copyPromoCode() {
+            navigator.clipboard.writeText('NBA50').then(() => {
+                const hint = document.getElementById('copyHint');
+                hint.textContent = '✓ Copied!';
+                hint.classList.add('copied');
+                setTimeout(() => {
+                    hint.textContent = 'Click to copy';
+                    hint.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // SUBSCRIBE FORM - Uses EmailOctopus
         const form = document.getElementById('signupForm');
         const emailInput = document.getElementById('email');
         const submitBtn = document.getElementById('submitBtn');
         const messageDiv = document.getElementById('message');
 
-        // Show message
         function showMessage(text, type) {
             messageDiv.textContent = text;
             messageDiv.className = `message ${type} show`;
@@ -819,7 +1165,6 @@
             }, 5000);
         }
 
-        // Handle signup
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -830,33 +1175,37 @@
                 return;
             }
 
-            // Disable button
             submitBtn.disabled = true;
             submitBtn.textContent = 'Subscribing...';
 
             try {
-                const response = await fetch(SCRIPT_URL, {
+                // EmailOctopus public form endpoint (no API key exposed)
+                const response = await fetch(`https://emailoctopus.com/lists/${EMAILOCTOPUS_LIST_ID}/members/embedded/1.3/add`, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        action: 'subscribe',
-                        email: email
+                        email_address: email,
+                        status: 'SUBSCRIBED'
                     })
                 });
 
-                // Note: no-cors mode doesn't allow reading response
-                // We assume success if no error thrown
-                showMessage('✓ Success! Check your email for confirmation.', 'success');
-                emailInput.value = '';
-
+                if (response.ok || response.status === 200) {
+                    showMessage('✓ Success! You\'ll get alerts when the promo is active.', 'success');
+                    emailInput.value = '';
+                } else {
+                    const result = await response.json();
+                    if (result.error && result.error.code === 'MEMBER_EXISTS_WITH_EMAIL_ADDRESS') {
+                        showMessage('You\'re already subscribed!', 'success');
+                        emailInput.value = '';
+                    } else {
+                        throw new Error('Failed');
+                    }
+                }
             } catch (error) {
                 showMessage('Error subscribing. Please try again.', 'error');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Get Notified';
+                submitBtn.textContent = 'Get Notified 🔔';
             }
         });
 
@@ -864,56 +1213,78 @@
         const scorersListEl = document.getElementById('scorersList');
         const seasonLabelEl = document.getElementById('seasonLabel');
 
-        // Get current NBA season
-        function getCurrentSeason() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1; // 1-12
+        // Embedded fallback data (updated periodically)
+        const FALLBACK_DATA = {
+            "season": "2025-26",
+            "subscriberCount": 0,
+            "scorers": [
+                {"date": "2025-11-22", "player": "James Harden", "team": "LAC", "points": 55},
+                {"date": "2025-11-20", "player": "Tyrese Maxey", "team": "PHI", "points": 54},
+                {"date": "2025-11-12", "player": "Nikola Jokic", "team": "DEN", "points": 55},
+                {"date": "2025-10-27", "player": "Lauri Markkanen", "team": "UTAH", "points": 51},
+                {"date": "2025-10-26", "player": "Austin Reaves", "team": "LAL", "points": 51},
+                {"date": "2025-10-23", "player": "Shai Gilgeous-Alexander", "team": "OKC", "points": 55},
+                {"date": "2025-10-23", "player": "Aaron Gordon", "team": "DEN", "points": 50}
+            ]
+        };
 
-            // NBA season typically starts in October
-            if (month >= 10) {
-                return `${year}-${(year + 1).toString().slice(2)}`;
-            } else {
-                return `${year - 1}-${year.toString().slice(2)}`;
-            }
-        }
-
-        // Format date
         function formatDate(dateString) {
             const date = new Date(dateString);
-            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            const options = { month: 'short', day: 'numeric' };
             return date.toLocaleDateString('en-US', options);
         }
 
-        // Load 50+ Club data from JSON file (FAST!)
         async function load50ClubData() {
+            let data = null;
+
+            // Try to fetch from JSON file first
             try {
                 const response = await fetch('data/50_club.json');
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-                const data = await response.json();
-
-                // Update season label
-                if (data.season) {
-                    seasonLabelEl.textContent = `${data.season} Season`;
-                }
-
-                // Display scorers (note: JSON uses "player" not "name")
-                if (data.scorers && data.scorers.length > 0) {
-                    displayScorers(data.scorers);
-                } else {
-                    showEmptyState('No 50+ point games yet this season. Check back soon!');
+                if (response.ok) {
+                    data = await response.json();
                 }
             } catch (error) {
-                console.error('Error loading 50+ Club data:', error);
-                showEmptyState('Unable to load data. Please refresh the page.');
+                console.log('Using fallback data (file:// protocol or fetch error)');
             }
+
+            // Use fallback if fetch failed
+            if (!data) {
+                data = FALLBACK_DATA;
+            }
+
+            if (data.season) {
+                seasonLabelEl.textContent = `${data.season} Season`;
+            }
+
+            // Show last updated time
+            if (data.lastUpdated) {
+                const lastUpdatedEl = document.getElementById('lastUpdated');
+                const updated = new Date(data.lastUpdated);
+                lastUpdatedEl.textContent = `Updated: ${updated.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} at ${updated.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+            }
+
+            // Show subscriber count
+            const subCountEl = document.getElementById('subscriberCount');
+            const count = data.subscriberCount || 0;
+            if (count > 0) {
+                subCountEl.textContent = `✓ Join ${count} subscriber${count !== 1 ? 's' : ''}`;
+            } else {
+                subCountEl.textContent = '✓ Be the first to join!';
+            }
+
+            if (data.scorers && data.scorers.length > 0) {
+                displayScorers(data.scorers);
+            } else {
+                showEmptyState('No 50+ point games yet this season.');
+            }
+
+            // Update promo status banner
+            updatePromoStatus(data);
         }
 
-        // Display scorers in the sidebar
         function displayScorers(scorers) {
             if (scorers.length === 0) {
-                showEmptyState('No 50+ point games yet this season. Check back soon!');
+                showEmptyState('No 50+ point games yet this season.');
                 return;
             }
 
@@ -931,7 +1302,6 @@
             `).join('');
         }
 
-        // Show empty state
         function showEmptyState(message) {
             scorersListEl.innerHTML = `
                 <div class="empty-state">
@@ -941,8 +1311,89 @@
             `;
         }
 
-        // Load scorers on page load
         load50ClubData();
+
+        // Check promo status based on 50+ club data
+        function updatePromoStatus(data) {
+            const banner = document.getElementById('statusBanner');
+            const statusText = document.getElementById('statusText');
+
+            if (!data || !data.scorers || data.scorers.length === 0) {
+                banner.classList.add('inactive');
+                statusText.textContent = 'No active promo today';
+                return;
+            }
+
+            // Check if most recent game was yesterday (promo would be active today)
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+            const latestGame = data.scorers[0];
+            const gameDate = latestGame.date;
+
+            if (gameDate === yesterdayStr) {
+                banner.classList.add('active');
+                statusText.textContent = `🔥 PROMO ACTIVE! ${latestGame.player} dropped ${latestGame.points} pts yesterday`;
+            } else {
+                banner.classList.add('inactive');
+                statusText.textContent = 'No active promo today — we\'ll alert you when it happens!';
+            }
+        }
+
+        // CONTACT FORM - Uses Web3Forms (free, unlimited)
+        const contactForm = document.getElementById('contactForm');
+        const contactBtn = document.getElementById('contactBtn');
+        const contactStatus = document.getElementById('contactStatus');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            if (!name || !email || !message) {
+                contactStatus.textContent = 'Please fill in all fields';
+                contactStatus.className = 'contact-status error';
+                return;
+            }
+
+            contactBtn.disabled = true;
+            contactBtn.textContent = 'Sending...';
+            contactStatus.textContent = '';
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        access_key: WEB3FORMS_KEY,
+                        subject: 'NBA 50-Alert: New message',
+                        from_name: 'NBA 50-Alert Contact',
+                        name: name,
+                        email: email,
+                        message: message
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    contactStatus.textContent = '✓ Message sent! Thank you!';
+                    contactStatus.className = 'contact-status success';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Failed');
+                }
+            } catch (error) {
+                contactStatus.textContent = 'Failed to send. Please try again.';
+                contactStatus.className = 'contact-status error';
+            } finally {
+                contactBtn.disabled = false;
+                contactBtn.textContent = 'Send Message';
+            }
+        });
     </script>
 </body>
 </html>
