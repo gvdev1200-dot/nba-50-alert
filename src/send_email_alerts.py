@@ -17,6 +17,7 @@ class EmailAlertSender:
         self.emails_json_path = emails_json_path
         self.api_key = os.environ.get('EMAILOCTOPUS_API_KEY')
         self.list_id = os.environ.get('EMAILOCTOPUS_LIST_ID')
+        self.sender_email = os.environ.get('SENDER_EMAIL', 'noreply@example.com')
 
         if not self.api_key:
             print("[ERROR] EMAILOCTOPUS_API_KEY environment variable not set")
@@ -184,7 +185,7 @@ class EmailAlertSender:
                     "subject": subject,
                     "from": {
                         "name": "NBA 50-Point Alert",
-                        "email_address": "alerts@nba50alert.com"
+                        "email_address": self.sender_email
                     },
                     "content": {
                         "html": html_content,

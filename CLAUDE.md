@@ -96,6 +96,7 @@ Note: Only tracks sent alerts. Subscribers are stored in EmailOctopus.
 ```
 EMAILOCTOPUS_API_KEY   - EmailOctopus API key
 EMAILOCTOPUS_LIST_ID   - EmailOctopus list ID for subscribers
+SENDER_EMAIL           - Verified sender email in EmailOctopus
 ```
 
 ---

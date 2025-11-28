@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
             min-height: 100vh;
             display: flex;
@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
@@ -34,7 +34,7 @@
         h1 {
             color: #ff6600;
             margin-bottom: 20px;
-            font-size: 32px;
+            font-size: 28px;
         }
 
         .message {
@@ -61,137 +61,27 @@
         .btn:hover {
             background: #ff3300;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
         }
 
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .status {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .status.loading {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .back-link {
-            margin-top: 30px;
-        }
-
-        .back-link a {
-            color: #ff6600;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
+        .note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏀 Unsubscribe</h1>
+        <h1>Unsubscribe</h1>
 
-        <div id="loadingStatus" class="status loading hidden">
-            Processing your request...
+        <div class="message">
+            <p>To unsubscribe from NBA 50-Point Alerts, use the unsubscribe link at the bottom of any email you received from us.</p>
+            <p>This will instantly remove you from our mailing list.</p>
         </div>
 
-        <div id="successStatus" class="status success hidden">
-            ✓ You've been successfully unsubscribed from NBA 50-Point Alerts.
-        </div>
+        <a href="index.html" class="btn">Back to Homepage</a>
 
-        <div id="errorStatus" class="status error hidden">
-            ✗ Unable to process your request. Please try again or contact support.
-        </div>
-
-        <div id="initialMessage" class="message">
-            <p>Sorry to see you go!</p>
-            <p>Click the button below to unsubscribe from NBA 50-Point Alerts.</p>
-        </div>
-
-        <button id="unsubscribeBtn" class="btn">Unsubscribe</button>
-
-        <div id="finalMessage" class="message hidden">
-            <p>You will no longer receive email alerts when NBA players score 50+ points.</p>
-            <p>You can always resubscribe at any time by visiting our homepage.</p>
-        </div>
-
-        <div class="back-link">
-            <a href="index.html">← Back to Homepage</a>
-        </div>
+        <p class="note">Changed your mind? You can always resubscribe on our homepage.</p>
     </div>
-
-    <script>
-        // NOTE: For now, this is a simple client-side page
-        // In the future, this can integrate with GitHub API to automatically remove emails
-        // Currently, users need to email the admin to unsubscribe
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const btn = document.getElementById('unsubscribeBtn');
-        const initialMessage = document.getElementById('initialMessage');
-        const finalMessage = document.getElementById('finalMessage');
-        const loadingStatus = document.getElementById('loadingStatus');
-        const successStatus = document.getElementById('successStatus');
-        const errorStatus = document.getElementById('errorStatus');
-
-        if (!token) {
-            errorStatus.textContent = '✗ Invalid unsubscribe link. Please use the link from your email.';
-            errorStatus.classList.remove('hidden');
-            initialMessage.classList.add('hidden');
-            btn.classList.add('hidden');
-        }
-
-        btn.addEventListener('click', async function() {
-            btn.disabled = true;
-            initialMessage.classList.add('hidden');
-            loadingStatus.classList.remove('hidden');
-
-            // Simulate processing (for now, this is client-side only)
-            // In production, this would call an API to remove the email
-            setTimeout(() => {
-                loadingStatus.classList.add('hidden');
-                successStatus.classList.remove('hidden');
-                finalMessage.classList.remove('hidden');
-                btn.classList.add('hidden');
-
-                // TODO: In production, implement actual unsubscribe via GitHub API
-                // For now, show instructions
-                finalMessage.innerHTML = `
-                    <p>Your unsubscribe request has been recorded.</p>
-                    <p><strong>Temporary Note:</strong> To complete the unsubscription, please email
-                    <a href="mailto:gvdev1200@gmail.com?subject=Unsubscribe NBA 50 Alert&body=Unsubscribe Token: ${token}">
-                    gvdev1200@gmail.com</a> with your unsubscribe token.</p>
-                    <p style="font-size: 12px; color: #666; margin-top: 10px;">Token: ${token}</p>
-                `;
-            }, 1500);
-        });
-    </script>
 </body>
 </html>
