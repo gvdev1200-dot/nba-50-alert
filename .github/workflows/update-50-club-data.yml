@@ -42,7 +42,7 @@ jobs:
         env:
           EMAILOCTOPUS_API_KEY: ${{ secrets.EMAILOCTOPUS_API_KEY }}
           EMAILOCTOPUS_LIST_ID: ${{ secrets.EMAILOCTOPUS_LIST_ID }}
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          EMAILOCTOPUS_AUTOMATION_ID: ${{ secrets.EMAILOCTOPUS_AUTOMATION_ID }}
         run: |
           python src/send_email_alerts.py
         continue-on-error: false

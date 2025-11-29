@@ -1,12 +1,18 @@
 """
 Send email alerts when NBA players score 50+ points
-Uses EmailOctopus API to notify subscribers about DoorDash promo
+Uses EmailOctopus Automations API to notify subscribers about DoorDash promo
+
+Setup required in EmailOctopus dashboard:
+1. Create an automation with "Started via API" trigger
+2. Add an email step with your alert template
+3. Copy the automation ID to EMAILOCTOPUS_AUTOMATION_ID secret
 """
 
 import os
 import sys
 import json
 import requests
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -17,7 +23,7 @@ class EmailAlertSender:
         self.emails_json_path = emails_json_path
         self.api_key = os.environ.get('EMAILOCTOPUS_API_KEY')
         self.list_id = os.environ.get('EMAILOCTOPUS_LIST_ID')
-        self.sender_email = os.environ.get('SENDER_EMAIL', 'noreply@example.com')
+        self.automation_id = os.environ.get('EMAILOCTOPUS_AUTOMATION_ID')
 
         if not self.api_key:
             print("[ERROR] EMAILOCTOPUS_API_KEY environment variable not set")
@@ -25,6 +31,10 @@ class EmailAlertSender:
 
         if not self.list_id:
             print("[ERROR] EMAILOCTOPUS_LIST_ID environment variable not set")
+            sys.exit(1)
+
+        if not self.automation_id:
+            print("[ERROR] EMAILOCTOPUS_AUTOMATION_ID environment variable not set")
             sys.exit(1)
 
         self.base_url = "https://emailoctopus.com/api/1.6"
@@ -64,20 +74,50 @@ class EmailAlertSender:
             print(f"[ERROR] Could not save emails data: {e}")
             return False
 
-    def get_subscriber_count(self):
-        """Get subscriber count from EmailOctopus"""
-        try:
-            response = requests.get(
-                f"{self.base_url}/lists/{self.list_id}",
-                params={"api_key": self.api_key},
-                timeout=10
-            )
-            if response.ok:
+    def get_all_subscribers(self):
+        """Get all subscribed contacts from the list"""
+        subscribers = []
+        page = 1
+
+        while True:
+            try:
+                response = requests.get(
+                    f"{self.base_url}/lists/{self.list_id}/contacts",
+                    params={
+                        "api_key": self.api_key,
+                        "limit": 100,
+                        "page": page
+                    },
+                    timeout=30
+                )
+
+                if not response.ok:
+                    print(f"[ERROR] Failed to get subscribers: {response.text}")
+                    break
+
                 data = response.json()
-                return data.get('counts', {}).get('subscribed', 0)
-        except Exception as e:
-            print(f"[WARNING] Could not get subscriber count: {e}")
-        return 0
+                contacts = data.get('data', [])
+
+                # Filter for subscribed contacts only
+                for contact in contacts:
+                    if contact.get('status') == 'SUBSCRIBED':
+                        subscribers.append({
+                            'id': contact.get('id'),
+                            'email': contact.get('email_address')
+                        })
+
+                # Check if there are more pages
+                paging = data.get('paging', {})
+                if not paging.get('next'):
+                    break
+
+                page += 1
+
+            except Exception as e:
+                print(f"[ERROR] Failed to fetch subscribers: {e}")
+                break
+
+        return subscribers
 
     def get_new_scorers(self, club_data, emails_data):
         """Get scorers that haven't been alerted yet"""
@@ -95,138 +135,37 @@ class EmailAlertSender:
 
         return new_scorers
 
-    def format_date(self, date_str):
-        """Format date string for display"""
+    def trigger_automation_for_contact(self, contact_id):
+        """Trigger the automation for a single contact"""
         try:
-            date = datetime.fromisoformat(date_str)
-            return date.strftime('%B %d, %Y')
-        except:
-            return date_str
-
-    def create_campaign(self, scorers):
-        """Create and send an email campaign via EmailOctopus"""
-        latest = scorers[0]['scorer']
-
-        subject = f"🏀 DoorDash 50% OFF Today! {latest['player']} scored {latest['points']} points"
-
-        # Build HTML content
-        scorers_html = ""
-        for item in scorers:
-            scorer = item['scorer']
-            scorers_html += f"""
-            <div style="background: white; padding: 20px; margin: 15px 0; border-left: 4px solid #ff6600;">
-                <div style="font-size: 20px; font-weight: bold; color: #ff6600;">{scorer['player']}</div>
-                <div style="color: #666; margin-top: 5px;">
-                    {scorer['points']} points • {scorer['team']} vs {scorer['opponent']} • {self.format_date(scorer['date'])}
-                </div>
-            </div>
-            """
-
-        html_content = f"""
-        <html>
-        <head>
-            <style>
-                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                .header {{ background: linear-gradient(135deg, #ff6600 0%, #ff3300 100%);
-                         color: white; padding: 30px; text-align: center; border-radius: 10px; }}
-                .header h1 {{ margin: 0; font-size: 28px; }}
-                .content {{ background: #f9f9f9; padding: 30px; margin: 20px 0; border-radius: 10px; }}
-                .promo-code {{ background: #ff6600; color: white; padding: 20px; text-align: center;
-                             font-size: 32px; font-weight: bold; border-radius: 10px; margin: 20px 0; }}
-                .footer {{ text-align: center; color: #999; font-size: 12px; margin-top: 30px; }}
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>🏀 DoorDash 50% OFF Alert!</h1>
-                    <p style="margin: 10px 0 0 0; font-size: 16px;">The promo is active TODAY</p>
-                </div>
-
-                <div class="content">
-                    <p><strong>Great news!</strong> An NBA player scored 50+ points, which means you get 50% off on DoorDash today!</p>
-
-                    {scorers_html}
-
-                    <div class="promo-code">
-                        NBA50
-                    </div>
-
-                    <p><strong>How to use:</strong></p>
-                    <ol>
-                        <li>Open the DoorDash app</li>
-                        <li>Make sure you have DashPass (required for this promo)</li>
-                        <li>Add items to your cart</li>
-                        <li>Enter promo code <strong>NBA50</strong> at checkout</li>
-                        <li>Get 50% off (up to $10 savings)!</li>
-                    </ol>
-
-                    <p style="color: #ff6600; font-weight: bold;">⏰ Valid TODAY from 9:00 AM PT until 11:59 PM PT — don't miss it!</p>
-                </div>
-
-                <div class="footer">
-                    <p>You're receiving this because you signed up for NBA 50-Point Alerts</p>
-                    <p><a href="{{{{UnsubscribeURL}}}}" style="color: #666;">Unsubscribe</a></p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
-
-        # Create campaign
-        try:
-            # First create the campaign
-            campaign_response = requests.post(
-                f"{self.base_url}/campaigns",
+            response = requests.post(
+                f"{self.base_url}/automations/{self.automation_id}/queue",
                 json={
                     "api_key": self.api_key,
-                    "name": f"NBA50 Alert - {latest['player']} {latest['points']}pts - {datetime.now().strftime('%Y-%m-%d')}",
-                    "subject": subject,
-                    "from": {
-                        "name": "NBA 50-Point Alert",
-                        "email_address": self.sender_email
-                    },
-                    "content": {
-                        "html": html_content,
-                        "plain_text": f"DoorDash 50% OFF Today! {latest['player']} scored {latest['points']} points. Use code NBA50 at checkout. Valid today only!"
-                    }
+                    "list_member_id": contact_id
                 },
-                timeout=30
+                timeout=10
             )
 
-            if not campaign_response.ok:
-                print(f"[ERROR] Failed to create campaign: {campaign_response.text}")
-                return False
-
-            campaign_data = campaign_response.json()
-            campaign_id = campaign_data.get('id')
-
-            # Now send the campaign to the list
-            send_response = requests.post(
-                f"{self.base_url}/campaigns/{campaign_id}/send",
-                json={
-                    "api_key": self.api_key,
-                    "list_id": self.list_id
-                },
-                timeout=30
-            )
-
-            if send_response.ok:
-                print(f"[OK] Campaign sent successfully!")
-                return True
+            if response.ok:
+                return True, None
             else:
-                print(f"[ERROR] Failed to send campaign: {send_response.text}")
-                return False
+                error_data = response.json() if response.text else {}
+                error_code = error_data.get('error', {}).get('code', 'UNKNOWN')
+
+                # ALREADY_STARTED is not a failure - contact already received this automation
+                if error_code == 'ALREADY_STARTED':
+                    return True, 'already_started'
+
+                return False, error_code
 
         except Exception as e:
-            print(f"[ERROR] Failed to create/send campaign: {e}")
-            return False
+            return False, str(e)
 
     def send_alerts(self):
-        """Main function to send alerts"""
+        """Main function to send alerts via automation"""
         print("\n" + "="*70)
-        print("NBA 50+ POINT EMAIL ALERT SENDER (EmailOctopus)")
+        print("NBA 50+ POINT EMAIL ALERT SENDER (EmailOctopus Automations)")
         print("="*70 + "\n")
 
         # Load data
@@ -237,14 +176,6 @@ class EmailAlertSender:
             print("[ERROR] No club data available")
             return False
 
-        # Get subscriber count
-        subscriber_count = self.get_subscriber_count()
-        print(f"[INFO] Current subscribers: {subscriber_count}")
-
-        if subscriber_count == 0:
-            print("[INFO] No subscribers yet - skipping alert")
-            return True
-
         # Get new scorers (not yet alerted)
         new_scorers = self.get_new_scorers(club_data, emails_data)
 
@@ -252,23 +183,59 @@ class EmailAlertSender:
             print("[INFO] No new 50+ point games to alert about")
             return True
 
-        print(f"[INFO] Found {len(new_scorers)} new 50+ point performance(s) to alert about:")
+        print(f"[INFO] Found {len(new_scorers)} new 50+ point performance(s):")
         for item in new_scorers:
             scorer = item['scorer']
             print(f"  - {scorer['player']}: {scorer['points']} pts on {scorer['date']}")
 
-        # Send campaign
-        print(f"\n[INFO] Sending campaign to {subscriber_count} subscriber(s)...")
-        success = self.create_campaign(new_scorers)
+        # Get all subscribers
+        print("\n[INFO] Fetching subscribers...")
+        subscribers = self.get_all_subscribers()
 
-        if success:
-            # Mark scorers as alerted
+        if not subscribers:
+            print("[INFO] No subscribers yet - skipping alert")
+            # Still mark as sent so we don't retry
             for item in new_scorers:
                 emails_data['sent_alerts'].append(item['alert_key'])
             self.save_emails_data(emails_data)
+            return True
+
+        print(f"[INFO] Found {len(subscribers)} subscriber(s)")
+        print(f"\n[INFO] Triggering automation for each subscriber...")
+
+        # Trigger automation for each subscriber
+        success_count = 0
+        skip_count = 0
+        fail_count = 0
+
+        for i, subscriber in enumerate(subscribers):
+            success, error = self.trigger_automation_for_contact(subscriber['id'])
+
+            if success:
+                if error == 'already_started':
+                    skip_count += 1
+                else:
+                    success_count += 1
+            else:
+                fail_count += 1
+                print(f"  [WARN] Failed for {subscriber['email']}: {error}")
+
+            # Rate limiting: max 10 requests per second
+            if (i + 1) % 10 == 0:
+                time.sleep(1)
+                print(f"  Progress: {i + 1}/{len(subscribers)}...")
+
+        print(f"\n[RESULT] Triggered: {success_count}, Skipped: {skip_count}, Failed: {fail_count}")
+
+        # Mark scorers as alerted if we had any success
+        if success_count > 0 or skip_count > 0:
+            for item in new_scorers:
+                emails_data['sent_alerts'].append(item['alert_key'])
+            self.save_emails_data(emails_data)
+            print("[OK] Alert tracking updated")
 
         print("\n" + "="*70 + "\n")
-        return success
+        return fail_count == 0
 
 
 def main():

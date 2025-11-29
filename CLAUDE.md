@@ -18,7 +18,7 @@ A website that notifies users when an NBA player scores 50+ points, which activa
 |---------|---------|---------|
 | **GitHub Pages** | Website hosting | Auto-deploys on push to main |
 | **GitHub Actions** | Daily data updates | Runs at 2 AM UTC daily |
-| **EmailOctopus** | Email subscriptions + alerts | Embedded form + campaign sending |
+| **EmailOctopus** | Email subscriptions + alerts | Embedded form + Automations API |
 | **Web3Forms** | Contact form only | Key is public (designed for client-side) |
 | **ESPN API** | NBA scores data | Free, no key needed |
 
@@ -52,7 +52,7 @@ A website that notifies users when an NBA player scores 50+ points, which activa
 1. **2 AM UTC**: GitHub Actions runs `update-50-club-data.yml`
 2. Fetches yesterday's NBA scores from ESPN API
 3. If any player scored 50+, updates `data/50_club.json`
-4. Sends email campaign to all EmailOctopus subscribers
+4. Triggers EmailOctopus automation for all subscribers (sends alert email)
 5. Commits changes back to repo
 6. GitHub Pages auto-deploys updated site
 
@@ -94,10 +94,20 @@ Note: Only tracks sent alerts. Subscribers are stored in EmailOctopus.
 
 ## GitHub Secrets Required
 ```
-EMAILOCTOPUS_API_KEY   - EmailOctopus API key
-EMAILOCTOPUS_LIST_ID   - EmailOctopus list ID for subscribers
-SENDER_EMAIL           - Verified sender email in EmailOctopus
+EMAILOCTOPUS_API_KEY       - EmailOctopus API key
+EMAILOCTOPUS_LIST_ID       - EmailOctopus list ID for subscribers
+EMAILOCTOPUS_AUTOMATION_ID - Automation ID (from dashboard URL)
 ```
+
+## EmailOctopus Automation Setup
+
+1. Go to EmailOctopus dashboard > Automations
+2. Create new automation with trigger: **"Started via API"**
+3. Add email step with this content:
+   - Subject: "DoorDash 50% OFF is Active Today!"
+   - Body: Generic alert that links to website for details
+4. Copy automation ID from URL: `emailoctopus.com/automations/<AUTOMATION_ID>`
+5. Add as GitHub secret: `EMAILOCTOPUS_AUTOMATION_ID`
 
 ---
 
@@ -147,8 +157,15 @@ git status
 
 ---
 
-## Recent Changes (2025-11-27)
+## Recent Changes
 
+### 2025-11-29
+- Switched from EmailOctopus Campaigns API to Automations API
+- Campaigns API was deprecated/removed (returned 405 error)
+- Now requires EMAILOCTOPUS_AUTOMATION_ID secret
+- Email content is now static (defined in EmailOctopus dashboard)
+
+### 2025-11-27
 - Redesigned website for compact layout
 - Added live promo status banner
 - Added click-to-copy promo code
