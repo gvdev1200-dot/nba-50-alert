@@ -157,7 +157,63 @@ git status
 
 ---
 
+## Email Alert Safety Features
+
+The email sender has multiple protections to **prevent ALL types of false alarms**:
+
+### Type 1: Duplicate Alerts (same game twice)
+| Protection | How it prevents duplicates |
+|------------|---------------------------|
+| **Concurrency control** | Workflow prevents duplicate runs from overlapping |
+| **Git push retry (3x)** | Ensures sent alerts are recorded even if push fails |
+| **File corruption detection** | Exits if emails.json corrupted (won't re-send everything) |
+| **Atomic file saves** | Uses os.replace() to prevent partial writes |
+| **MIN_SUCCESS_RATE = 95%** | Won't mark as "sent" unless 95%+ succeed |
+
+### Type 2: Old Alerts (promo already expired)
+| Protection | How it prevents old alerts |
+|------------|---------------------------|
+| **MAX_ALERT_AGE_DAYS = 1** | Only alerts for games from yesterday (promo active today) |
+| **Season date validation** | Rejects games from before current season started |
+
+### Type 3: True False Alarms (no 50+ game happened)
+| Protection | How it prevents fake alerts |
+|------------|---------------------------|
+| **Points validation** | Must be integer, 50-100 range (NBA record is 100) |
+| **Date validation** | Must be valid format, not in future, within season |
+| **Team validation** | Must be valid NBA team abbreviation |
+| **Required fields check** | Player, date, team, points all required |
+| **ESPN as only source** | Data comes directly from ESPN API (trusted) |
+
+**Design principle:** Better to miss an alert than send a false alarm.
+
+---
+
 ## Recent Changes
+
+### 2025-11-30
+- **Priority: Prevent ALL false alarms** - Added comprehensive safety features
+- **Duplicates prevention:**
+  - Added concurrency control to prevent duplicate workflow runs
+  - Added git push retry (3 attempts) to prevent duplicates after push failure
+  - Increased MIN_SUCCESS_RATE from 80% to 95%
+  - Added ALREADY_STARTED detection (catches misconfigured automation)
+  - Changed to atomic file writes using os.replace()
+  - Added file corruption detection and backup
+  - API failures no longer mark alerts as sent
+- **Old alerts prevention:**
+  - Changed MAX_ALERT_AGE_DAYS from 7 to 1 (promo only active day after game)
+  - Added season date validation (rejects games from before season)
+- **True false alarms prevention:**
+  - Added scorer validation (points 50-100, valid date, valid team, required fields)
+  - Points > 100 rejected as data corruption (NBA record is 100)
+  - Future dates rejected
+  - Pre-season dates rejected
+- **Other improvements:**
+  - Changed workflow time from 2 AM to 6 AM UTC (catches late West Coast games)
+  - Added workflow timeout (30 minutes)
+  - Added validation steps for both JSON files in workflow
+  - Added retry logic with exponential backoff
 
 ### 2025-11-29
 - Switched from EmailOctopus Campaigns API to Automations API

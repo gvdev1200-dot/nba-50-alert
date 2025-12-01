@@ -2,9 +2,16 @@ name: Update 50+ Club Data
 
 on:
   schedule:
-    # Run daily at 2 AM UTC (after NBA games finish)
-    - cron: '0 2 * * *'
+    # Run daily at 6 AM UTC (after all NBA games finish, including West Coast)
+    # 6 AM UTC = 1 AM ET = 10 PM PT (previous day)
+    - cron: '0 6 * * *'
   workflow_dispatch: # Allow manual trigger
+
+# CRITICAL: Prevent duplicate runs (scheduled + manual could overlap)
+# This prevents duplicate emails if two runs happen simultaneously
+concurrency:
+  group: update-50-club-data
+  cancel-in-progress: false  # Queue instead of cancel to not lose data
 
 permissions:
   contents: write
@@ -12,6 +19,7 @@ permissions:
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    timeout-minutes: 30  # Fail fast instead of waiting 6 hours
 
     steps:
       - name: Checkout repository
@@ -36,7 +44,16 @@ jobs:
 
       - name: Validate JSON output
         run: |
-          python -c "import json; json.load(open('data/50_club.json'))"
+          python -c "
+          import json
+          from datetime import datetime
+          data = json.load(open('data/50_club.json'))
+          assert 'scorers' in data, 'Missing scorers'
+          assert 'lastCheckedDate' in data, 'Missing lastCheckedDate'
+          assert isinstance(data.get('totalGames', 0), int), 'totalGames not int'
+          datetime.strptime(data['lastCheckedDate'], '%Y-%m-%d')
+          print(f'Validated: {len(data[\"scorers\"])} scorers')
+          "
 
       - name: Send email alerts
         env:
@@ -47,6 +64,15 @@ jobs:
           python src/send_email_alerts.py
         continue-on-error: false
 
+      - name: Validate email tracking
+        run: |
+          python -c "
+          import json
+          data = json.load(open('data/emails.json'))
+          assert isinstance(data.get('sent_alerts'), list), 'sent_alerts not a list'
+          print(f'Validated: {len(data[\"sent_alerts\"])} alerts tracked')
+          "
+
       - name: Commit and push if data changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -55,7 +81,25 @@ jobs:
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "Auto-update 50+ Club data and email alerts - $(date +'%Y-%m-%d')"
-            git push
+            exit 0
           fi
+
+          git commit -m "Auto-update 50+ Club data and email alerts - $(date +'%Y-%m-%d')"
+
+          # CRITICAL: Retry push to prevent duplicate emails
+          # If push fails after emails were sent, next run would re-send
+          for i in 1 2 3; do
+            if git push; then
+              echo "Push successful"
+              exit 0
+            else
+              echo "Push failed (attempt $i/3), pulling and retrying..."
+              git pull --rebase origin main || {
+                echo "CRITICAL: Rebase failed - manual intervention required"
+                exit 1
+              }
+            fi
+          done
+
+          echo "CRITICAL: All push attempts failed - emails may be duplicated next run"
+          exit 1
