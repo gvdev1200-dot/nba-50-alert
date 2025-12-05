@@ -82,18 +82,19 @@ class SeasonClubGenerator:
 
                 if status == 'STATUS_FINAL':
                     game_date = event.get('date', '')
-                    # Parse ISO date and convert to US Eastern Time for correct game date
+                    # Parse ISO date and convert to Pacific Time for correct game date
+                    # PT is used because DoorDash promo is PT-based (9am-11:59pm PT)
                     if game_date:
                         # Parse UTC time
                         date_obj_utc = datetime.fromisoformat(game_date.replace('Z', '+00:00'))
 
-                        # Convert to US Eastern Time (handles DST automatically)
-                        eastern = ZoneInfo('America/New_York')
-                        date_obj_et = date_obj_utc.astimezone(eastern)
+                        # Convert to Pacific Time (handles DST automatically)
+                        pacific = ZoneInfo('America/Los_Angeles')
+                        date_obj_pt = date_obj_utc.astimezone(pacific)
 
                         games_list.append({
                             'game_id': event['id'],
-                            'date': date_obj_et.strftime('%Y-%m-%d'),
+                            'date': date_obj_pt.strftime('%Y-%m-%d'),
                             'name': event.get('shortName', 'Unknown'),
                             'home_team': event.get('competitions', [{}])[0].get('competitors', [{}])[0].get('team', {}).get('abbreviation', ''),
                             'away_team': event.get('competitions', [{}])[0].get('competitors', [{}])[1].get('team', {}).get('abbreviation', '')

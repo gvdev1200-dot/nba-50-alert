@@ -225,9 +225,9 @@ class EmailAlertSender:
         date_str = scorer.get('date', '')
         try:
             game_date = datetime.strptime(date_str, '%Y-%m-%d').date()
-            # Check date is not in the future (use ET since game dates are in ET)
-            eastern = ZoneInfo('America/New_York')
-            today = datetime.now(eastern).date()
+            # Check date is not in the future (use PT since game dates are in PT)
+            pacific = ZoneInfo('America/Los_Angeles')
+            today = datetime.now(pacific).date()
             if game_date > today:
                 errors.append(f"game date in future: {date_str}")
             # Check date is within current season (not years ago)
@@ -251,10 +251,10 @@ class EmailAlertSender:
         sent_alerts = set(emails_data.get('sent_alerts', []))
         scorers = club_data.get('scorers', [])
 
-        # Use Eastern Time since game dates are stored in ET
+        # Use Pacific Time since game dates are stored in PT
         # This ensures the alert age check matches the game date timezone
-        eastern = ZoneInfo('America/New_York')
-        today = datetime.now(eastern).date()
+        pacific = ZoneInfo('America/Los_Angeles')
+        today = datetime.now(pacific).date()
         cutoff_date = today - timedelta(days=MAX_ALERT_AGE_DAYS)
 
         new_scorers = []
