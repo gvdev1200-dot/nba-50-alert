@@ -167,13 +167,14 @@ class SeasonClubGenerator:
         end_date = datetime.now()
 
         if existing_data and not force_full_scan:
-            # Incremental update - only scan since last check
+            # Incremental update - rescan from last checked date
+            # (not day after, because games finish late and we might run before they're done)
             last_checked = existing_data.get('lastCheckedDate')
             if last_checked:
-                start_date = datetime.fromisoformat(last_checked) + timedelta(days=1)
+                start_date = datetime.fromisoformat(last_checked)
                 print(f"[INCREMENTAL UPDATE]")
                 print(f"Last checked: {last_checked}")
-                print(f"Checking new games since then...\n")
+                print(f"Re-scanning from that date to catch late games...\n")
             else:
                 # No lastCheckedDate in old format, do full scan
                 start_date = self.get_season_start_date()
