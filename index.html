@@ -1264,25 +1264,27 @@
                 return;
             }
 
-            // Get today's date in Pacific Time (promo valid 9am-11:59pm PT)
+            // Game dates in 50_club.json are stored in Eastern Time (ET)
+            // Promo is active the day AFTER the game (in PT)
+            // Since ET is 3 hours ahead of PT, we compare game date (ET) with yesterday (ET)
             const now = new Date();
-            const ptFormatter = new Intl.DateTimeFormat('en-CA', {
-                timeZone: 'America/Los_Angeles',
+            const etFormatter = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'America/New_York',
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit'
             });
-            const todayPT = ptFormatter.format(now); // YYYY-MM-DD in PT
+            const todayET = etFormatter.format(now); // YYYY-MM-DD in ET
 
-            // Calculate yesterday in PT using the same PT formatter
+            // Calculate yesterday in ET (to match game date timezone)
             const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000); // Subtract 24 hours
-            const yesterdayPT = ptFormatter.format(yesterday); // YYYY-MM-DD in PT
+            const yesterdayET = etFormatter.format(yesterday); // YYYY-MM-DD in ET
 
             const latestGame = data.scorers[0];
-            const gameDate = latestGame.date;
+            const gameDate = latestGame.date; // Stored in ET
 
-            // Promo is active if game was yesterday (PT timezone)
-            if (gameDate === yesterdayPT) {
+            // Promo is active if game was yesterday (comparing both in ET)
+            if (gameDate === yesterdayET) {
                 banner.classList.add('active');
                 statusText.textContent = `🔥 PROMO ACTIVE! ${latestGame.player} dropped ${latestGame.points} pts yesterday`;
             } else {
