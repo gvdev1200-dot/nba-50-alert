@@ -1264,16 +1264,21 @@
                 return;
             }
 
-            // Check if most recent game was yesterday (promo would be active today)
-            const today = new Date();
-            const yesterday = new Date(today);
+            // Get current time in Pacific Time (where promo is valid 9am-11:59pm PT)
+            const now = new Date();
+            const ptOptions = { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' };
+            const ptDateStr = now.toLocaleDateString('en-CA', ptOptions); // en-CA gives YYYY-MM-DD format
+
+            // Yesterday in PT
+            const yesterday = new Date(now);
             yesterday.setDate(yesterday.getDate() - 1);
-            const yesterdayStr = yesterday.toISOString().split('T')[0];
+            const ptYesterdayStr = yesterday.toLocaleDateString('en-CA', ptOptions);
 
             const latestGame = data.scorers[0];
             const gameDate = latestGame.date;
 
-            if (gameDate === yesterdayStr) {
+            // Promo is active if game was yesterday (PT timezone)
+            if (gameDate === ptYesterdayStr) {
                 banner.classList.add('active');
                 statusText.textContent = `🔥 PROMO ACTIVE! ${latestGame.player} dropped ${latestGame.points} pts yesterday`;
             } else {
