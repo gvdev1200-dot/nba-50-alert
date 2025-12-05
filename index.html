@@ -1274,16 +1274,12 @@
             });
             const todayPT = ptFormatter.format(now); // YYYY-MM-DD in PT
 
-            // Calculate yesterday in PT by parsing today and subtracting a day
-            const [year, month, day] = todayPT.split('-').map(Number);
-            const todayDate = new Date(year, month - 1, day); // Create date from PT components
-            todayDate.setDate(todayDate.getDate() - 1); // Subtract 1 day
-            const yesterdayPT = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
+            // Calculate yesterday in PT using the same PT formatter
+            const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000); // Subtract 24 hours
+            const yesterdayPT = ptFormatter.format(yesterday); // YYYY-MM-DD in PT
 
             const latestGame = data.scorers[0];
             const gameDate = latestGame.date;
-
-            console.log('Promo check:', { todayPT, yesterdayPT, gameDate, match: gameDate === yesterdayPT });
 
             // Promo is active if game was yesterday (PT timezone)
             if (gameDate === yesterdayPT) {

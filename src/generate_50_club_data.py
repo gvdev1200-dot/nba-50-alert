@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 import json
 import os
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 class SeasonClubGenerator:
     def __init__(self, json_path):
@@ -86,9 +87,9 @@ class SeasonClubGenerator:
                         # Parse UTC time
                         date_obj_utc = datetime.fromisoformat(game_date.replace('Z', '+00:00'))
 
-                        # Convert to US Eastern Time (UTC-5 or UTC-4 depending on DST)
-                        # Subtract 5 hours to get ET (approximation - covers most NBA games)
-                        date_obj_et = date_obj_utc - timedelta(hours=5)
+                        # Convert to US Eastern Time (handles DST automatically)
+                        eastern = ZoneInfo('America/New_York')
+                        date_obj_et = date_obj_utc.astimezone(eastern)
 
                         games_list.append({
                             'game_id': event['id'],

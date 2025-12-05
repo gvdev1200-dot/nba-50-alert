@@ -2,9 +2,9 @@ name: Update 50+ Club Data
 
 on:
   schedule:
-    # Run daily at 6 AM PT (14:00 UTC during PST, 13:00 UTC during PDT)
-    # All games finished, email arrives 3 hours before promo starts at 9 AM PT
-    # Using 14:00 UTC (6 AM PST) - slightly earlier during PDT but still fine
+    # Run daily at 6 AM PST / 7 AM PDT (14:00 UTC)
+    # All NBA games finished by this time, email arrives before promo starts at 9 AM PT
+    # Note: Runs 1 hour later during daylight saving time (March-November)
     - cron: '0 14 * * *'
   workflow_dispatch: # Allow manual trigger
 
