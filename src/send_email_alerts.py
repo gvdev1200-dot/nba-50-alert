@@ -16,6 +16,7 @@ import time
 import shutil
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 # Only send alerts for games from yesterday (promo active today)
 # DoorDash promo is only active the DAY AFTER a 50+ point game
@@ -224,8 +225,9 @@ class EmailAlertSender:
         date_str = scorer.get('date', '')
         try:
             game_date = datetime.strptime(date_str, '%Y-%m-%d').date()
-            # Check date is not in the future
-            today = datetime.now(timezone.utc).date()
+            # Check date is not in the future (use ET since game dates are in ET)
+            eastern = ZoneInfo('America/New_York')
+            today = datetime.now(eastern).date()
             if game_date > today:
                 errors.append(f"game date in future: {date_str}")
             # Check date is within current season (not years ago)
@@ -249,8 +251,10 @@ class EmailAlertSender:
         sent_alerts = set(emails_data.get('sent_alerts', []))
         scorers = club_data.get('scorers', [])
 
-        # Use UTC for consistency across all environments
-        today = datetime.now(timezone.utc).date()
+        # Use Eastern Time since game dates are stored in ET
+        # This ensures the alert age check matches the game date timezone
+        eastern = ZoneInfo('America/New_York')
+        today = datetime.now(eastern).date()
         cutoff_date = today - timedelta(days=MAX_ALERT_AGE_DAYS)
 
         new_scorers = []
