@@ -1264,21 +1264,29 @@
                 return;
             }
 
-            // Get current time in Pacific Time (where promo is valid 9am-11:59pm PT)
+            // Get today's date in Pacific Time (promo valid 9am-11:59pm PT)
             const now = new Date();
-            const ptOptions = { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' };
-            const ptDateStr = now.toLocaleDateString('en-CA', ptOptions); // en-CA gives YYYY-MM-DD format
+            const ptFormatter = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'America/Los_Angeles',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+            const todayPT = ptFormatter.format(now); // YYYY-MM-DD in PT
 
-            // Yesterday in PT
-            const yesterday = new Date(now);
-            yesterday.setDate(yesterday.getDate() - 1);
-            const ptYesterdayStr = yesterday.toLocaleDateString('en-CA', ptOptions);
+            // Calculate yesterday in PT by parsing today and subtracting a day
+            const [year, month, day] = todayPT.split('-').map(Number);
+            const todayDate = new Date(year, month - 1, day); // Create date from PT components
+            todayDate.setDate(todayDate.getDate() - 1); // Subtract 1 day
+            const yesterdayPT = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
 
             const latestGame = data.scorers[0];
             const gameDate = latestGame.date;
 
+            console.log('Promo check:', { todayPT, yesterdayPT, gameDate, match: gameDate === yesterdayPT });
+
             // Promo is active if game was yesterday (PT timezone)
-            if (gameDate === ptYesterdayStr) {
+            if (gameDate === yesterdayPT) {
                 banner.classList.add('active');
                 statusText.textContent = `🔥 PROMO ACTIVE! ${latestGame.player} dropped ${latestGame.points} pts yesterday`;
             } else {
