@@ -178,7 +178,8 @@ class SeasonClubGenerator:
             # We rescan lastCheckedDate to be safe (duplicates are filtered out)
             last_checked = existing_data.get('lastCheckedDate')
             if last_checked:
-                start_date = datetime.fromisoformat(last_checked)
+                # Parse as PT date (lastCheckedDate is stored in PT)
+                start_date = datetime.fromisoformat(last_checked).replace(tzinfo=pacific)
                 print(f"[INCREMENTAL UPDATE]")
                 print(f"Last checked: {last_checked}")
                 print(f"Scanning from that date to now...\n")
