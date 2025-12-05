@@ -18,7 +18,8 @@ class SeasonClubGenerator:
 
     def get_current_season(self):
         """Get current NBA season (e.g., '2024-25')"""
-        now = datetime.now()
+        pacific = ZoneInfo('America/Los_Angeles')
+        now = datetime.now(pacific)
         year = now.year
         month = now.month
 
@@ -30,7 +31,8 @@ class SeasonClubGenerator:
 
     def get_season_start_date(self):
         """Get approximate season start date (October 15 of current season year)"""
-        now = datetime.now()
+        pacific = ZoneInfo('America/Los_Angeles')
+        now = datetime.now(pacific)
         year = now.year
         month = now.month
 
@@ -39,7 +41,7 @@ class SeasonClubGenerator:
             year -= 1
 
         # NBA season typically starts mid-October
-        return datetime(year, 10, 15)
+        return datetime(year, 10, 15, tzinfo=pacific)
 
     def load_existing_data(self):
         """Load existing JSON data if it exists"""
@@ -166,7 +168,9 @@ class SeasonClubGenerator:
         existing_data = self.load_existing_data()
 
         # Determine date range to scan
-        end_date = datetime.now()
+        # Use Pacific Time since game dates are stored in PT
+        pacific = ZoneInfo('America/Los_Angeles')
+        end_date = datetime.now(pacific)
 
         if existing_data and not force_full_scan:
             # Incremental update - scan from last checked date
@@ -196,13 +200,13 @@ class SeasonClubGenerator:
             if existing_data:
                 # Just update lastCheckedDate
                 existing_data['lastCheckedDate'] = end_date.strftime('%Y-%m-%d')
-                existing_data['lastUpdated'] = datetime.now().isoformat()
+                existing_data['lastUpdated'] = datetime.now(pacific).isoformat()
                 return existing_data
             else:
                 # Return empty data
                 return {
                     'season': season,
-                    'lastUpdated': datetime.now().isoformat(),
+                    'lastUpdated': datetime.now(pacific).isoformat(),
                     'lastCheckedDate': end_date.strftime('%Y-%m-%d'),
                     'totalGames': 0,
                     'scorers': []
@@ -263,7 +267,7 @@ class SeasonClubGenerator:
         # Create updated JSON structure
         data = {
             'season': season,
-            'lastUpdated': datetime.now().isoformat(),
+            'lastUpdated': datetime.now(pacific).isoformat(),
             'lastCheckedDate': end_date.strftime('%Y-%m-%d'),
             'totalGames': total_games,
             'scorers': unique_scorers
