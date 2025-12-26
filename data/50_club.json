@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2025-12-25T06:12:41.921240-08:00",
-  "lastCheckedDate": "2025-12-25",
-  "totalGames": 1140,
+  "lastUpdated": "2025-12-26T06:13:12.942515-08:00",
+  "lastCheckedDate": "2025-12-26",
+  "totalGames": 1145,
   "scorers": [
+    {
+      "date": "2025-12-25",
+      "player": "Nikola Jokic",
+      "team": "DEN",
+      "points": 56,
+      "opponent": "MIN"
+    },
     {
       "date": "2025-12-03",
       "player": "Jamal Murray",
