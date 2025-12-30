@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2025-12-28T06:12:07.404713-08:00",
-  "lastCheckedDate": "2025-12-28",
-  "totalGames": 1163,
+  "lastUpdated": "2025-12-30T06:14:11.014730-08:00",
+  "lastCheckedDate": "2025-12-30",
+  "totalGames": 1180,
   "scorers": [
+    {
+      "date": "2025-12-28",
+      "player": "Kawhi Leonard",
+      "team": "LAC",
+      "points": 55,
+      "opponent": "DET"
+    },
     {
       "date": "2025-12-25",
       "player": "Nikola Jokic",
