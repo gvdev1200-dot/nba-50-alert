@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2026-01-03T06:11:45.897475-08:00",
-  "lastCheckedDate": "2026-01-03",
-  "totalGames": 1208,
+  "lastUpdated": "2026-01-04T06:11:36.517031-08:00",
+  "lastCheckedDate": "2026-01-04",
+  "totalGames": 1216,
   "scorers": [
+    {
+      "date": "2026-01-03",
+      "player": "Jaylen Brown",
+      "team": "BOS",
+      "points": 50,
+      "opponent": "LAC"
+    },
     {
       "date": "2025-12-28",
       "player": "Kawhi Leonard",
