@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2026-01-17T06:12:05.010004-08:00",
-  "lastCheckedDate": "2026-01-17",
-  "totalGames": 1314,
+  "lastUpdated": "2026-01-19T06:19:23.341067-08:00",
+  "lastCheckedDate": "2026-01-19",
+  "totalGames": 1329,
   "scorers": [
+    {
+      "date": "2026-01-17",
+      "player": "Anthony Edwards",
+      "team": "MIN",
+      "points": 55,
+      "opponent": "SA"
+    },
     {
       "date": "2026-01-03",
       "player": "Jaylen Brown",
