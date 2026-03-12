@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2026-03-10T07:40:58.586505-07:00",
-  "lastCheckedDate": "2026-03-10",
-  "totalGames": 1664,
+  "lastUpdated": "2026-03-12T07:41:37.588281-07:00",
+  "lastCheckedDate": "2026-03-12",
+  "totalGames": 1681,
   "scorers": [
+    {
+      "date": "2026-03-10",
+      "player": "Bam Adebayo",
+      "team": "MIA",
+      "points": 83,
+      "opponent": "WSH"
+    },
     {
       "date": "2026-01-17",
       "player": "Anthony Edwards",
