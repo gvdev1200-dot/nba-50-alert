@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2026-03-12T07:41:37.588281-07:00",
-  "lastCheckedDate": "2026-03-12",
-  "totalGames": 1681,
+  "lastUpdated": "2026-03-14T07:20:19.520695-07:00",
+  "lastCheckedDate": "2026-03-14",
+  "totalGames": 1698,
   "scorers": [
+    {
+      "date": "2026-03-12",
+      "player": "Luka Doncic",
+      "team": "LAL",
+      "points": 51,
+      "opponent": "CHI"
+    },
     {
       "date": "2026-03-10",
       "player": "Bam Adebayo",
