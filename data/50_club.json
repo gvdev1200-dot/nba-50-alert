@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2026-03-25T07:52:26.083627-07:00",
-  "lastCheckedDate": "2026-03-25",
-  "totalGames": 1780,
+  "lastUpdated": "2026-03-27T07:43:32.282035-07:00",
+  "lastCheckedDate": "2026-03-27",
+  "totalGames": 1795,
   "scorers": [
+    {
+      "date": "2026-03-25",
+      "player": "Jamal Murray",
+      "team": "DEN",
+      "points": 53,
+      "opponent": "DAL"
+    },
     {
       "date": "2026-03-19",
       "player": "Luka Doncic",
