@@ -1,9 +1,16 @@
 {
   "season": "2025-26",
-  "lastUpdated": "2026-04-03T07:36:28.803631-07:00",
-  "lastCheckedDate": "2026-04-03",
-  "totalGames": 1850,
+  "lastUpdated": "2026-04-05T07:28:01.544107-07:00",
+  "lastCheckedDate": "2026-04-05",
+  "totalGames": 1862,
   "scorers": [
+    {
+      "date": "2026-04-03",
+      "player": "Cooper Flagg",
+      "team": "DAL",
+      "points": 51,
+      "opponent": "ORL"
+    },
     {
       "date": "2026-03-25",
       "player": "Jamal Murray",
